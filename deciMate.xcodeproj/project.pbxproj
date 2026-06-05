@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A3FBFBCD89D66931B837AF2 /* CompanionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */; };
+		1214BA2A557AB9B42D8AAE81 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE616930FAD9C5FD97077B /* ContentView.swift */; };
+		2E05DE624A1669E745D2DD5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61A31F3F542E05140A19FA25 /* Assets.xcassets */; };
+		33B0BF0D19931E55A0140D61 /* SPLCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212585CA363825B818B201D /* SPLCalculator.swift */; };
+		630B8FED1FECB3CB5364827A /* MeasurementSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB7A1CB5F2AAC0639E78C0 /* MeasurementSession.swift */; };
+		6FAF3BA29F84862C3F79C13E /* DeciMateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6E5012685DABD8D12585B /* DeciMateApp.swift */; };
+		970AB0EED822A9948BC59991 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18F313B3A00BD342FDE755 /* SettingsView.swift */; };
+		9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */; };
+		B45849DA19E6D87D8071721A /* deciMateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D3644C44463E9047A77F73 /* deciMateTests.swift */; };
+		E634D7369FFAE411721B9CF7 /* SPLMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */; };
+		F8204CBB790A0D2EFC2CF407 /* ThresholdEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B180A21036D60E313266468 /* ThresholdEngine.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4A856BFFAF6C93FC41280882 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3651318E9CB2793A7568183 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6AB359822BFAB8D25E86CAD;
+			remoteInfo = deciMate;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		06D3644C44463E9047A77F73 /* deciMateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deciMateTests.swift; sourceTree = "<group>"; };
+		1212585CA363825B818B201D /* SPLCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPLCalculator.swift; sourceTree = "<group>"; };
+		1B180A21036D60E313266468 /* ThresholdEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdEngine.swift; sourceTree = "<group>"; };
+		23CB7A1CB5F2AAC0639E78C0 /* MeasurementSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSession.swift; sourceTree = "<group>"; };
+		27EE616930FAD9C5FD97077B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2AA6E5012685DABD8D12585B /* DeciMateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeciMateApp.swift; sourceTree = "<group>"; };
+		61A31F3F542E05140A19FA25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionView.swift; sourceTree = "<group>"; };
+		C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPLMonitorViewModel.swift; sourceTree = "<group>"; };
+		CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = deciMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE18F313B3A00BD342FDE755 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DEE0AB2AF77F089EC1A1CCB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInputManager.swift; sourceTree = "<group>"; };
+		E958635F24D88A8F0EA3F933 /* deciMate.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = deciMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		7195D04874D5A9D232EE92B4 = {
+			isa = PBXGroup;
+			children = (
+				F6ED83589D847E5AF0FACBD7 /* deciMate */,
+				B03B109D86A349EECC488347 /* deciMateTests */,
+				DB265D9856C622E7C73D7C69 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7492094779AC2812E3BED012 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */,
+				27EE616930FAD9C5FD97077B /* ContentView.swift */,
+				CE18F313B3A00BD342FDE755 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		963F93C4B020A4DD70249F2B /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */,
+				23CB7A1CB5F2AAC0639E78C0 /* MeasurementSession.swift */,
+				1212585CA363825B818B201D /* SPLCalculator.swift */,
+				C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */,
+				1B180A21036D60E313266468 /* ThresholdEngine.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B03B109D86A349EECC488347 /* deciMateTests */ = {
+			isa = PBXGroup;
+			children = (
+				06D3644C44463E9047A77F73 /* deciMateTests.swift */,
+			);
+			path = deciMateTests;
+			sourceTree = "<group>";
+		};
+		DB265D9856C622E7C73D7C69 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E958635F24D88A8F0EA3F933 /* deciMate.app */,
+				CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F6ED83589D847E5AF0FACBD7 /* deciMate */ = {
+			isa = PBXGroup;
+			children = (
+				61A31F3F542E05140A19FA25 /* Assets.xcassets */,
+				2AA6E5012685DABD8D12585B /* DeciMateApp.swift */,
+				DEE0AB2AF77F089EC1A1CCB6 /* Info.plist */,
+				963F93C4B020A4DD70249F2B /* Core */,
+				7492094779AC2812E3BED012 /* Views */,
+			);
+			path = deciMate;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		97CDB31C0BC31E9CC9364421 /* deciMateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F39D30DAA01E7AAF81601D1C /* Build configuration list for PBXNativeTarget "deciMateTests" */;
+			buildPhases = (
+				566EE10F06827748A8C95350 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F17E75C1956BCDFF1EDC145A /* PBXTargetDependency */,
+			);
+			name = deciMateTests;
+			packageProductDependencies = (
+			);
+			productName = deciMateTests;
+			productReference = CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E6AB359822BFAB8D25E86CAD /* deciMate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6920FE09C26943040044A36C /* Build configuration list for PBXNativeTarget "deciMate" */;
+			buildPhases = (
+				21C4D0AB1A56ED10753FABA0 /* Sources */,
+				76009D94472622C15F9F3D8E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = deciMate;
+			packageProductDependencies = (
+			);
+			productName = deciMate;
+			productReference = E958635F24D88A8F0EA3F933 /* deciMate.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B3651318E9CB2793A7568183 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 6395E024CB4F5E8E85CEC80E /* Build configuration list for PBXProject "deciMate" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7195D04874D5A9D232EE92B4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 54;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E6AB359822BFAB8D25E86CAD /* deciMate */,
+				97CDB31C0BC31E9CC9364421 /* deciMateTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		76009D94472622C15F9F3D8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E05DE624A1669E745D2DD5E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21C4D0AB1A56ED10753FABA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */,
+				0A3FBFBCD89D66931B837AF2 /* CompanionView.swift in Sources */,
+				1214BA2A557AB9B42D8AAE81 /* ContentView.swift in Sources */,
+				6FAF3BA29F84862C3F79C13E /* DeciMateApp.swift in Sources */,
+				630B8FED1FECB3CB5364827A /* MeasurementSession.swift in Sources */,
+				33B0BF0D19931E55A0140D61 /* SPLCalculator.swift in Sources */,
+				E634D7369FFAE411721B9CF7 /* SPLMonitorViewModel.swift in Sources */,
+				970AB0EED822A9948BC59991 /* SettingsView.swift in Sources */,
+				F8204CBB790A0D2EFC2CF407 /* ThresholdEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		566EE10F06827748A8C95350 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B45849DA19E6D87D8071721A /* deciMateTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F17E75C1956BCDFF1EDC145A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6AB359822BFAB8D25E86CAD /* deciMate */;
+			targetProxy = 4A856BFFAF6C93FC41280882 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0C2855CDF9D18405D520286C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = deciMate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.loudandbeyond.decimate;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1F85BD1334E3028F1E336467 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = deciMate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.loudandbeyond.decimate;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		47D8893470D3B5246B8CE6B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.loudandbeyond.decimate.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/deciMate.app/deciMate";
+			};
+			name = Debug;
+		};
+		50B0748BA82CCDA8676FE658 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7ABC014EAE66C1567237B38D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		84C6452DABEB1E0DDD23F2BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.loudandbeyond.decimate.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/deciMate.app/deciMate";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6395E024CB4F5E8E85CEC80E /* Build configuration list for PBXProject "deciMate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7ABC014EAE66C1567237B38D /* Debug */,
+				50B0748BA82CCDA8676FE658 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6920FE09C26943040044A36C /* Build configuration list for PBXNativeTarget "deciMate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F85BD1334E3028F1E336467 /* Debug */,
+				0C2855CDF9D18405D520286C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F39D30DAA01E7AAF81601D1C /* Build configuration list for PBXNativeTarget "deciMateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47D8893470D3B5246B8CE6B4 /* Debug */,
+				84C6452DABEB1E0DDD23F2BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B3651318E9CB2793A7568183 /* Project object */;
+}
