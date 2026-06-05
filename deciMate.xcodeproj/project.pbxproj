@@ -13,8 +13,11 @@
 		33B0BF0D19931E55A0140D61 /* SPLCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212585CA363825B818B201D /* SPLCalculator.swift */; };
 		630B8FED1FECB3CB5364827A /* MeasurementSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CB7A1CB5F2AAC0639E78C0 /* MeasurementSession.swift */; };
 		6FAF3BA29F84862C3F79C13E /* DeciMateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA6E5012685DABD8D12585B /* DeciMateApp.swift */; };
+		7B32A721F4E80F37BE76844F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DF913C5D54746E85A7B12F3 /* LaunchScreen.storyboard */; };
+		87CB661FD0638A2FE6613F37 /* CSVExportDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9CCB7D34FC6F1E7265B3C /* CSVExportDocument.swift */; };
 		970AB0EED822A9948BC59991 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18F313B3A00BD342FDE755 /* SettingsView.swift */; };
 		9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */; };
+		A5D9129CB4EE82583CFB727D /* LiveLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B28F6EA836BACC0ED7E7C9 /* LiveLinkService.swift */; };
 		B45849DA19E6D87D8071721A /* deciMateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D3644C44463E9047A77F73 /* deciMateTests.swift */; };
 		E634D7369FFAE411721B9CF7 /* SPLMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */; };
 		F8204CBB790A0D2EFC2CF407 /* ThresholdEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B180A21036D60E313266468 /* ThresholdEngine.swift */; };
@@ -31,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01D9CCB7D34FC6F1E7265B3C /* CSVExportDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVExportDocument.swift; sourceTree = "<group>"; };
 		06D3644C44463E9047A77F73 /* deciMateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deciMateTests.swift; sourceTree = "<group>"; };
 		1212585CA363825B818B201D /* SPLCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPLCalculator.swift; sourceTree = "<group>"; };
 		1B180A21036D60E313266468 /* ThresholdEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdEngine.swift; sourceTree = "<group>"; };
@@ -38,7 +42,9 @@
 		27EE616930FAD9C5FD97077B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2AA6E5012685DABD8D12585B /* DeciMateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeciMateApp.swift; sourceTree = "<group>"; };
 		61A31F3F542E05140A19FA25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61B28F6EA836BACC0ED7E7C9 /* LiveLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLinkService.swift; sourceTree = "<group>"; };
 		9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionView.swift; sourceTree = "<group>"; };
+		9DF913C5D54746E85A7B12F3 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPLMonitorViewModel.swift; sourceTree = "<group>"; };
 		CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = deciMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE18F313B3A00BD342FDE755 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -71,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */,
+				01D9CCB7D34FC6F1E7265B3C /* CSVExportDocument.swift */,
+				61B28F6EA836BACC0ED7E7C9 /* LiveLinkService.swift */,
 				23CB7A1CB5F2AAC0639E78C0 /* MeasurementSession.swift */,
 				1212585CA363825B818B201D /* SPLCalculator.swift */,
 				C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */,
@@ -102,6 +110,7 @@
 				61A31F3F542E05140A19FA25 /* Assets.xcassets */,
 				2AA6E5012685DABD8D12585B /* DeciMateApp.swift */,
 				DEE0AB2AF77F089EC1A1CCB6 /* Info.plist */,
+				9DF913C5D54746E85A7B12F3 /* LaunchScreen.storyboard */,
 				963F93C4B020A4DD70249F2B /* Core */,
 				7492094779AC2812E3BED012 /* Views */,
 			);
@@ -184,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E05DE624A1669E745D2DD5E /* Assets.xcassets in Resources */,
+				7B32A721F4E80F37BE76844F /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,9 +205,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */,
+				87CB661FD0638A2FE6613F37 /* CSVExportDocument.swift in Sources */,
 				0A3FBFBCD89D66931B837AF2 /* CompanionView.swift in Sources */,
 				1214BA2A557AB9B42D8AAE81 /* ContentView.swift in Sources */,
 				6FAF3BA29F84862C3F79C13E /* DeciMateApp.swift in Sources */,
+				A5D9129CB4EE82583CFB727D /* LiveLinkService.swift in Sources */,
 				630B8FED1FECB3CB5364827A /* MeasurementSession.swift in Sources */,
 				33B0BF0D19931E55A0140D61 /* SPLCalculator.swift in Sources */,
 				E634D7369FFAE411721B9CF7 /* SPLMonitorViewModel.swift in Sources */,
@@ -307,7 +319,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -365,7 +377,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;

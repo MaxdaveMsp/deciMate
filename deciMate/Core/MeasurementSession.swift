@@ -1,11 +1,19 @@
 import Foundation
 
 struct MeasurementSample: Identifiable, Codable {
-    let id = UUID()
+    let id: UUID
     let timestamp: Date
     let spl: Double
     let peak: Double
     let thresholdState: ThresholdState
+
+    init(id: UUID = UUID(), timestamp: Date, spl: Double, peak: Double, thresholdState: ThresholdState) {
+        self.id = id
+        self.timestamp = timestamp
+        self.spl = spl
+        self.peak = peak
+        self.thresholdState = thresholdState
+    }
 }
 
 struct MeasurementSession: Codable {
