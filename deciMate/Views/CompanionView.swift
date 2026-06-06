@@ -1,5 +1,9 @@
 import SwiftUI
 
+// MARK: - CompanionView
+// Clean status panel for deciMate. No mascot, no face, no EQ-bar character.
+// The motion language is now professional: subtle rings, SPL status color, and a compact live indicator.
+
 struct CompanionView: View {
     let state: CompanionState
 
@@ -9,64 +13,78 @@ struct CompanionView: View {
     var body: some View {
         VStack(spacing: 14) {
             ZStack {
-                AmbientRings(state: state, isAnimating: isAnimating && !reduceMotion)
+                StatusRings(state: state, isAnimating: isAnimating && !reduceMotion)
 
                 Circle()
-                    .fill(.ultraThinMaterial)
-                    .frame(width: 116, height: 116)
+                    .fill(Color(red: 0.07, green: 0.10, blue: 0.16))
+                    .frame(width: 108, height: 108)
                     .overlay(
                         Circle()
-                            .strokeBorder(state.color.opacity(0.32), lineWidth: 1.5)
+                            .strokeBorder(state.accentColor.opacity(0.32), lineWidth: 1.2)
                     )
-                    .shadow(color: state.color.opacity(0.18), radius: 18, y: 8)
+                    .shadow(color: state.accentColor.opacity(0.18), radius: 18, y: 8)
 
                 Image("Logo")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 78, height: 78)
-                    .opacity(0.92)
-                    .scaleEffect(isAnimating && !reduceMotion ? state.logoScale : 1.0)
+                    .frame(width: 82, height: 82)
+                    .scaleEffect(isAnimating && !reduceMotion ? state.logoPulseScale : 1.0)
                     .animation(state.logoAnimation, value: isAnimating)
 
-                StatusBadge(state: state)
+                Circle()
+                    .fill(state.accentColor)
+                    .frame(width: 12, height: 12)
+                    .overlay(Circle().strokeBorder(.white.opacity(0.6), lineWidth: 1))
+                    .shadow(color: state.accentColor.opacity(0.8), radius: 6)
                     .offset(x: 42, y: -42)
             }
-            .frame(height: 148)
+            .frame(height: 130)
 
             VStack(spacing: 5) {
                 Text(state.message)
-                    .font(.headline.weight(.semibold))
+                    .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    .foregroundStyle(.primary)
+                    .contentTransition(.opacity)
 
                 Text(state.detailMessage)
-                    .font(.caption)
+                    .font(.system(.caption, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .contentTransition(.opacity)
             }
 
-            LevelActivityBars(state: state, isAnimating: isAnimating && !reduceMotion)
-                .frame(height: 24)
-                .padding(.top, 2)
+            StatusPill(state: state)
         }
-        .padding(.vertical, 18)
+        .padding(.vertical, 20)
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(.thinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 28, style: .continuous)
-                        .strokeBorder(state.color.opacity(0.22), lineWidth: 1)
-                )
-        )
+        .background(cardBackground)
+        .shadow(color: state.accentColor.opacity(0.12), radius: 22, y: 8)
         .onAppear { isAnimating = true }
         .onChange(of: state) { _, _ in
             isAnimating = false
             DispatchQueue.main.async { isAnimating = true }
         }
     }
+
+    private var cardBackground: some View {
+        RoundedRectangle(cornerRadius: 28, style: .continuous)
+            .fill(Color(red: 0.09, green: 0.11, blue: 0.17))
+            .overlay(
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [state.accentColor.opacity(0.34), state.accentColor.opacity(0.05)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1
+                    )
+            )
+    }
 }
 
-private struct AmbientRings: View {
+private struct StatusRings: View {
     let state: CompanionState
     let isAnimating: Bool
 
@@ -74,14 +92,14 @@ private struct AmbientRings: View {
         ZStack {
             ForEach(0..<3, id: \.self) { index in
                 Circle()
-                    .stroke(state.color.opacity(0.22 - Double(index) * 0.045), lineWidth: 1.6)
-                    .frame(width: 104 + CGFloat(index * 20), height: 104 + CGFloat(index * 20))
-                    .scaleEffect(isAnimating ? state.ringScale + CGFloat(index) * 0.025 : 0.98)
-                    .opacity(isAnimating ? 0.28 : 0.58)
+                    .stroke(state.accentColor.opacity(0.20 - Double(index) * 0.045), lineWidth: 1.4)
+                    .frame(width: 104 + CGFloat(index * 18), height: 104 + CGFloat(index * 18))
+                    .scaleEffect(isAnimating ? state.ringScale + CGFloat(index) * 0.018 : 0.98)
+                    .opacity(isAnimating ? 0.28 : 0.56)
                     .animation(
-                        .easeInOut(duration: state.ringDuration + Double(index) * 0.18)
-                        .repeatForever(autoreverses: true)
-                        .delay(Double(index) * 0.08),
+                        .easeInOut(duration: state.ringDuration + Double(index) * 0.14)
+                            .repeatForever(autoreverses: true)
+                            .delay(Double(index) * 0.06),
                         value: isAnimating
                     )
             }
@@ -89,127 +107,97 @@ private struct AmbientRings: View {
     }
 }
 
-private struct StatusBadge: View {
+private struct StatusPill: View {
     let state: CompanionState
 
     var body: some View {
-        Image(systemName: state.symbolName)
-            .font(.system(size: 17, weight: .bold, design: .rounded))
-            .foregroundStyle(.white)
-            .frame(width: 36, height: 36)
-            .background(state.color.gradient, in: Circle())
-            .overlay(Circle().strokeBorder(.white.opacity(0.35), lineWidth: 1))
-            .shadow(color: state.color.opacity(0.28), radius: 10, y: 5)
-    }
-}
-
-private struct LevelActivityBars: View {
-    let state: CompanionState
-    let isAnimating: Bool
-
-    private let heights: [CGFloat] = [0.36, 0.66, 0.48, 0.86, 0.54, 0.74, 0.42]
-
-    var body: some View {
-        HStack(spacing: 5) {
-            ForEach(heights.indices, id: \.self) { index in
-                Capsule(style: .continuous)
-                    .fill(state.color.opacity(0.72))
-                    .frame(width: 5, height: 22 * heights[index])
-                    .scaleEffect(y: isAnimating ? state.barScale(for: index) : 0.72, anchor: .center)
-                    .animation(
-                        .easeInOut(duration: state.barDuration(for: index))
-                        .repeatForever(autoreverses: true),
-                        value: isAnimating
-                    )
-            }
+        HStack(spacing: 8) {
+            Image(systemName: state.symbolName)
+                .font(.system(size: 12, weight: .bold))
+            Text(state.statusLabel)
+                .font(.system(.caption, design: .rounded, weight: .semibold))
         }
-        .opacity(state == .idle ? 0.45 : 0.95)
+        .foregroundStyle(state.accentColor)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background(state.accentColor.opacity(0.12), in: Capsule(style: .continuous))
+        .overlay(Capsule(style: .continuous).strokeBorder(state.accentColor.opacity(0.22), lineWidth: 1))
     }
 }
 
 private extension CompanionState {
-    var symbolName: String {
+    var detailMessage: String {
         switch self {
-        case .idle: "waveform"
-        case .focused: "checkmark.circle.fill"
-        case .worried: "exclamationmark.triangle.fill"
-        case .alarmed: "exclamationmark.octagon.fill"
-        case .peak: "bolt.circle.fill"
+        case .idle:    return "Tap Start to begin monitoring"
+        case .focused: return "Levels are within practical range"
+        case .worried: return "Approaching the warning threshold"
+        case .alarmed: return "Reduce level or increase distance"
+        case .peak:    return "Short high-energy event detected"
         }
     }
 
-    var detailMessage: String {
+    var statusLabel: String {
         switch self {
-        case .idle: "Microphone standby"
-        case .focused: "Clean headroom for practical monitoring"
-        case .worried: "Watch the warning threshold"
-        case .alarmed: "Reduce level or increase distance"
-        case .peak: "Short high-energy event detected"
+        case .idle:    return "STANDBY"
+        case .focused: return "SAFE"
+        case .worried: return "WARNING"
+        case .alarmed: return "CRITICAL"
+        case .peak:    return "PEAK"
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .idle:    return "waveform"
+        case .focused: return "checkmark.circle.fill"
+        case .worried: return "exclamationmark.triangle.fill"
+        case .alarmed: return "exclamationmark.octagon.fill"
+        case .peak:    return "bolt.circle.fill"
         }
     }
 
     var ringScale: CGFloat {
         switch self {
-        case .idle: 1.015
-        case .focused: 1.035
-        case .worried: 1.055
-        case .alarmed: 1.075
-        case .peak: 1.095
+        case .idle:    return 1.010
+        case .focused: return 1.025
+        case .worried: return 1.045
+        case .alarmed: return 1.065
+        case .peak:    return 1.085
         }
     }
 
     var ringDuration: Double {
         switch self {
-        case .idle: 2.4
-        case .focused: 2.0
-        case .worried: 1.55
-        case .alarmed: 1.15
-        case .peak: 0.82
+        case .idle:    return 2.4
+        case .focused: return 2.0
+        case .worried: return 1.5
+        case .alarmed: return 1.1
+        case .peak:    return 0.8
         }
     }
 
-    var logoScale: CGFloat {
+    var logoPulseScale: CGFloat {
         switch self {
-        case .idle, .focused: 1.012
-        case .worried: 1.018
-        case .alarmed: 1.024
-        case .peak: 1.032
+        case .idle, .focused: return 1.010
+        case .worried: return 1.016
+        case .alarmed: return 1.022
+        case .peak: return 1.030
         }
     }
 
     var logoAnimation: Animation {
         .easeInOut(duration: self == .peak ? 0.75 : 1.8).repeatForever(autoreverses: true)
     }
-
-    func barScale(for index: Int) -> CGFloat {
-        let energy: CGFloat
-        switch self {
-        case .idle: energy = 0.78
-        case .focused: energy = 0.92
-        case .worried: energy = 1.08
-        case .alarmed: energy = 1.22
-        case .peak: energy = 1.38
-        }
-        return energy + CGFloat(index % 3) * 0.06
-    }
-
-    func barDuration(for index: Int) -> Double {
-        let base: Double
-        switch self {
-        case .idle: base = 1.35
-        case .focused: base = 1.1
-        case .worried: base = 0.82
-        case .alarmed: base = 0.62
-        case .peak: base = 0.42
-        }
-        return base + Double(index) * 0.035
-    }
 }
 
 #Preview {
-    VStack(spacing: 20) {
-        CompanionView(state: .focused)
-        CompanionView(state: .peak)
+    ScrollView {
+        VStack(spacing: 14) {
+            ForEach([CompanionState.idle, .focused, .worried, .alarmed, .peak], id: \.message) { state in
+                CompanionView(state: state)
+            }
+        }
+        .padding(16)
     }
-    .padding()
+    .background(Color(red: 0.05, green: 0.07, blue: 0.11).ignoresSafeArea())
 }
