@@ -37,7 +37,6 @@ private struct NavBarLogo: View {
 
 struct ContentView: View {
     @EnvironmentObject private var vm: SPLMonitorViewModel
-    var screenshotScene: ScreenshotScene? = nil
     @State private var navPath = NavigationPath()
 
     private let openSettings = NotificationCenter.default.publisher(for: .init("deciMate.openSettings"))
