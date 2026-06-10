@@ -55,11 +55,11 @@ enum CompanionState: Equatable {
 
     var message: String {
         switch self {
-        case .idle: "Ready to listen"
-        case .focused: "Levels look good"
-        case .worried: "Getting loud"
-        case .alarmed: "Threshold exceeded"
-        case .peak: "Peak event!"
+        case .idle:    "Ready to listen"
+        case .focused: "All good!"
+        case .worried: "Getting loud..."
+        case .alarmed: "Too loud!"
+        case .peak:    "PEAK! Oww!!"
         }
     }
 

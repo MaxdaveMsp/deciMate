@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,7 +18,9 @@
 		970AB0EED822A9948BC59991 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE18F313B3A00BD342FDE755 /* SettingsView.swift */; };
 		9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */; };
 		A5D9129CB4EE82583CFB727D /* LiveLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B28F6EA836BACC0ED7E7C9 /* LiveLinkService.swift */; };
+		AA11BB22CC33DD44EE55FF66 /* DeciMateLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD44EE55FF66AA11 /* DeciMateLogo.swift */; };
 		B45849DA19E6D87D8071721A /* deciMateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D3644C44463E9047A77F73 /* deciMateTests.swift */; };
+		CC44DD55EE66FF77AA88BB99 /* ScreenshotSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD55EE66FF77AA88BB99CC44 /* ScreenshotSupport.swift */; };
 		E634D7369FFAE411721B9CF7 /* SPLMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */; };
 		F8204CBB790A0D2EFC2CF407 /* ThresholdEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B180A21036D60E313266468 /* ThresholdEngine.swift */; };
 /* End PBXBuildFile section */
@@ -45,12 +47,14 @@
 		61B28F6EA836BACC0ED7E7C9 /* LiveLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLinkService.swift; sourceTree = "<group>"; };
 		9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanionView.swift; sourceTree = "<group>"; };
 		9DF913C5D54746E85A7B12F3 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BB22CC33DD44EE55FF66AA11 /* DeciMateLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeciMateLogo.swift; sourceTree = "<group>"; };
 		C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPLMonitorViewModel.swift; sourceTree = "<group>"; };
-		CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = deciMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC3CEAD5E4A1FB887FE9A29F /* deciMateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = deciMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE18F313B3A00BD342FDE755 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DD55EE66FF77AA88BB99CC44 /* ScreenshotSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotSupport.swift; sourceTree = "<group>"; };
 		DEE0AB2AF77F089EC1A1CCB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E827DF523C4AFF9718A2FBDB /* AudioInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInputManager.swift; sourceTree = "<group>"; };
-		E958635F24D88A8F0EA3F933 /* deciMate.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = deciMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E958635F24D88A8F0EA3F933 /* deciMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = deciMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -67,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				9AA86ABBBE68BE5E3FF50ED6 /* CompanionView.swift */,
+				BB22CC33DD44EE55FF66AA11 /* DeciMateLogo.swift */,
 				27EE616930FAD9C5FD97077B /* ContentView.swift */,
 				CE18F313B3A00BD342FDE755 /* SettingsView.swift */,
 			);
@@ -83,6 +88,7 @@
 				1212585CA363825B818B201D /* SPLCalculator.swift */,
 				C97B48BF076EAE972C849E1F /* SPLMonitorViewModel.swift */,
 				1B180A21036D60E313266468 /* ThresholdEngine.swift */,
+				DD55EE66FF77AA88BB99CC44 /* ScreenshotSupport.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -163,9 +169,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
+				LastUpgradeCheck = 2640;
 			};
 			buildConfigurationList = 6395E024CB4F5E8E85CEC80E /* Build configuration list for PBXProject "deciMate" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -177,7 +181,6 @@
 			);
 			mainGroup = 7195D04874D5A9D232EE92B4;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -207,6 +210,8 @@
 				9D4C175AF2A29A7F550805CB /* AudioInputManager.swift in Sources */,
 				87CB661FD0638A2FE6613F37 /* CSVExportDocument.swift in Sources */,
 				0A3FBFBCD89D66931B837AF2 /* CompanionView.swift in Sources */,
+				AA11BB22CC33DD44EE55FF66 /* DeciMateLogo.swift in Sources */,
+				CC44DD55EE66FF77AA88BB99 /* ScreenshotSupport.swift in Sources */,
 				1214BA2A557AB9B42D8AAE81 /* ContentView.swift in Sources */,
 				6FAF3BA29F84862C3F79C13E /* DeciMateApp.swift in Sources */,
 				A5D9129CB4EE82583CFB727D /* LiveLinkService.swift in Sources */,
@@ -242,6 +247,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = MH7PVRVCH4;
 				INFOPLIST_FILE = deciMate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -258,6 +264,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = MH7PVRVCH4;
 				INFOPLIST_FILE = deciMate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -324,6 +331,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -338,6 +346,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -382,6 +391,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -403,6 +413,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;

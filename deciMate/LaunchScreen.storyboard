@@ -1,3 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VC">
-<device id="retina6_12" orientation="portrait" appearance="light"/><scenes><scene sceneID="scene"><objects><viewController id="VC" sceneMemberID="viewController"><view key="view" contentMode="scaleToFill" id="view"><rect key="frame" x="0.0" y="0.0" width="393" height="852"/><subviews><imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="logo"/><label opaque="NO" text="deciMate" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="title"><fontDescription key="fontDescription" type="boldSystem" pointSize="36"/><color key="textColor" red="0.95" green="0.98" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/></label></subviews><color key="backgroundColor" red="0.09" green="0.11" blue="0.15" alpha="1" colorSpace="custom" customColorSpace="sRGB"/><constraints><constraint firstItem="logo" firstAttribute="centerX" secondItem="view" secondAttribute="centerX" id="c1"/><constraint firstItem="logo" firstAttribute="centerY" secondItem="view" secondAttribute="centerY" constant="-40" id="c2"/><constraint firstItem="logo" firstAttribute="width" constant="160" id="c3"/><constraint firstItem="logo" firstAttribute="height" constant="160" id="c4"/><constraint firstItem="title" firstAttribute="top" secondItem="logo" secondAttribute="bottom" constant="20" id="c5"/><constraint firstItem="title" firstAttribute="centerX" secondItem="view" secondAttribute="centerX" id="c6"/></constraints></view></viewController><placeholder placeholderIdentifier="IBFirstResponder" id="firstResponder" sceneMemberID="firstResponder"/></objects></scene></scenes><resources><image name="Logo" width="256" height="256"/></resources></document>
+<device id="retina6_12" orientation="portrait" appearance="light"/>
+<scenes>
+  <scene sceneID="scene">
+    <objects>
+      <viewController id="VC" sceneMemberID="viewController">
+        <view key="view" contentMode="scaleToFill" id="view">
+          <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+          <subviews>
+
+            <!-- Outer diffuse halo (largest) — barely visible, just mood -->
+            <view translatesAutoresizingMaskIntoConstraints="NO" id="halo">
+              <color key="backgroundColor" red="0.20" green="0.82" blue="0.98" alpha="0.05" colorSpace="custom" customColorSpace="sRGB"/>
+            </view>
+
+            <!-- Logo image centered -->
+            <imageView
+              userInteractionEnabled="NO"
+              contentMode="scaleAspectFit"
+              image="Logo"
+              translatesAutoresizingMaskIntoConstraints="NO"
+              id="logo"/>
+
+            <!-- "deciMate" wordmark -->
+            <label
+              opaque="NO"
+              text="deciMate"
+              textAlignment="center"
+              translatesAutoresizingMaskIntoConstraints="NO"
+              id="title">
+              <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+              <color key="textColor" red="0.95" green="0.97" blue="1.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            </label>
+
+            <!-- Tagline in brand cyan -->
+            <label
+              opaque="NO"
+              text="Sound Level Monitor"
+              textAlignment="center"
+              translatesAutoresizingMaskIntoConstraints="NO"
+              id="tagline">
+              <fontDescription key="fontDescription" type="system" pointSize="14"/>
+              <color key="textColor" red="0.20" green="0.82" blue="0.98" alpha="0.80" colorSpace="custom" customColorSpace="sRGB"/>
+            </label>
+
+          </subviews>
+
+          <!-- Deep space navy background — matches app exactly -->
+          <color key="backgroundColor" red="0.05" green="0.07" blue="0.11" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+
+          <constraints>
+            <!-- Logo: centered, 40pt above vertical center -->
+            <constraint firstItem="logo" firstAttribute="centerX" secondItem="view" secondAttribute="centerX" id="lc"/>
+            <constraint firstItem="logo" firstAttribute="centerY" secondItem="view" secondAttribute="centerY" constant="-50" id="ly"/>
+            <constraint firstItem="logo" firstAttribute="width" constant="120" id="lw"/>
+            <constraint firstItem="logo" firstAttribute="height" constant="120" id="lh"/>
+
+            <!-- Wordmark: 20pt below logo -->
+            <constraint firstItem="title" firstAttribute="top" secondItem="logo" secondAttribute="bottom" constant="20" id="tc"/>
+            <constraint firstItem="title" firstAttribute="centerX" secondItem="view" secondAttribute="centerX" id="tx"/>
+
+            <!-- Tagline: 7pt below wordmark -->
+            <constraint firstItem="tagline" firstAttribute="top" secondItem="title" secondAttribute="bottom" constant="7" id="sg"/>
+            <constraint firstItem="tagline" firstAttribute="centerX" secondItem="view" secondAttribute="centerX" id="sx"/>
+
+            <!-- Halo: large circle centered on logo -->
+            <constraint firstItem="halo" firstAttribute="centerX" secondItem="logo" secondAttribute="centerX" id="hx"/>
+            <constraint firstItem="halo" firstAttribute="centerY" secondItem="logo" secondAttribute="centerY" id="hy"/>
+            <constraint firstItem="halo" firstAttribute="width" constant="360" id="hw"/>
+            <constraint firstItem="halo" firstAttribute="height" constant="360" id="hh"/>
+          </constraints>
+        </view>
+      </viewController>
+      <placeholder placeholderIdentifier="IBFirstResponder" id="firstResponder" sceneMemberID="firstResponder"/>
+    </objects>
+  </scene>
+</scenes>
+<resources>
+  <image name="Logo" width="256" height="256"/>
+</resources>
+</document>

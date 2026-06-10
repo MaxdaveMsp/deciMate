@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — deciMate</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #080c13; --card: #111827; --border: rgba(255,255,255,0.07); --cyan: #34d2f8; --text: #eef2ff; --muted: #7c8ca8; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif; line-height: 1.7; -webkit-font-smoothing: antialiased; padding: 60px 24px; }
+    .wrap { max-width: 680px; margin: 0 auto; }
+    .back { display: inline-flex; align-items: center; gap: 8px; color: var(--cyan); text-decoration: none; font-size: 14px; font-weight: 600; margin-bottom: 48px; }
+    .back:hover { opacity: 0.8; }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+    .logo img { width: 36px; border-radius: 9px; }
+    .logo span { font-size: 18px; font-weight: 700; }
+    h1 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+    .updated { color: var(--muted); font-size: 14px; margin-bottom: 48px; }
+    h2 { font-size: 20px; font-weight: 700; margin: 40px 0 12px; }
+    p { color: #c8d0e0; margin-bottom: 16px; font-size: 16px; }
+    ul { color: #c8d0e0; padding-left: 22px; margin-bottom: 16px; font-size: 16px; }
+    ul li { margin-bottom: 8px; }
+    a { color: var(--cyan); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+    footer { margin-top: 64px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Back to deciMate</a>
+
+  <div class="logo">
+    <img src="logo.png" alt="deciMate">
+    <span>deciMate</span>
+  </div>
+
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: June 2026</p>
+
+  <p>deciMate is built by David Torres / Loud and Beyond. This page explains what data the app accesses, how it is used, and what leaves your device.</p>
+
+  <h2>Microphone</h2>
+  <p>deciMate requests access to your device microphone solely to measure sound pressure levels. Audio is processed in real time to calculate dB readings. <strong>No audio is ever recorded, stored, or transmitted.</strong> Raw audio samples are discarded immediately after the RMS value is computed.</p>
+
+  <h2>Data stored on your device</h2>
+  <p>The following data is stored locally on your iPhone only:</p>
+  <ul>
+    <li>Calibration offset (a single number, saved in UserDefaults)</li>
+    <li>Threshold preferences — warning, critical, and peak dB values</li>
+    <li>Session samples during an active measurement session (held in memory, not persisted to disk unless you export)</li>
+  </ul>
+  <p>None of this data is transmitted to any server.</p>
+
+  <h2>Data you choose to export</h2>
+  <p>You can export a session as a CSV file using the Export button. This file is created on demand and shared only through the iOS share sheet — you control where it goes. deciMate does not receive a copy.</p>
+
+  <h2>deciMate Live Link (optional)</h2>
+  <p>Live Link is an optional feature you must explicitly start. When active, it opens a local HTTP server on port 8080 that responds to requests from devices on the same Wi-Fi network with a JSON snapshot of the current SPL reading. This feature:</p>
+  <ul>
+    <li>Only runs when you tap "Start Live Link"</li>
+    <li>Only responds to devices on your local network — it is not accessible over the internet</li>
+    <li>Does not store, log, or forward any data</li>
+    <li>Stops completely when you tap "Stop Live Link" or close the app</li>
+  </ul>
+
+  <h2>Analytics & tracking</h2>
+  <p>deciMate does not use any analytics SDK, advertising framework, or tracking library. No data is collected about how you use the app.</p>
+
+  <h2>Third-party services</h2>
+  <p>deciMate uses no third-party services, SDKs, or APIs. All functionality is built with Apple's own frameworks (SwiftUI, AVFoundation, Combine, Network).</p>
+
+  <h2>Children</h2>
+  <p>deciMate does not knowingly collect any information from children under 13. The app contains no advertising or in-app purchases targeting children.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated version will be posted at this URL. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+
+  <hr class="divider">
+
+  <h2>Contact</h2>
+  <p>Questions about this privacy policy? Email: <a href="mailto:info@loudandbeyond.com">info@loudandbeyond.com</a></p>
+
+  <footer>
+    <p>© 2026 Loud and Beyond / David Torres · deciMate is not a certified Class 1/Class 2 sound level meter.</p>
+  </footer>
+</div>
+</body>
+</html>
