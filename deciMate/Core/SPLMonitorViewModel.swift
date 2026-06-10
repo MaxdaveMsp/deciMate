@@ -18,6 +18,7 @@ final class SPLMonitorViewModel: ObservableObject {
     @Published var response: TimeResponse = .fast
     @Published var session = MeasurementSession()
     @Published var showingExporter = false
+    @Published var showingExportPreview = false
     @Published var exportDocument = CSVExportDocument()
     @Published var exportFilename = "deciMate-session.csv"
     @Published var liveLink = LiveLinkService()
@@ -57,8 +58,21 @@ final class SPLMonitorViewModel: ObservableObject {
     }
 
     func prepareCSVExport() {
-        exportDocument = CSVExportDocument(text: session.csvString())
-        exportFilename = "deciMate-\(Self.filenameDate.string(from: session.startedAt)).csv"
+        let report = session.reportString(
+            calibrationOffset: calibrationOffset,
+            weighting: weighting.rawValue,
+            response: response.rawValue,
+            warningThreshold: warningThreshold,
+            criticalThreshold: criticalThreshold,
+            peakThreshold: peakThreshold
+        )
+        exportDocument = CSVExportDocument(text: report)
+        exportFilename = "deciMate-report-\(Self.filenameDate.string(from: session.startedAt)).txt"
+        showingExportPreview = true
+    }
+
+    func confirmExport() {
+        showingExportPreview = false
         showingExporter = true
     }
 

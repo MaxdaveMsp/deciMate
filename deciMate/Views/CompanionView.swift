@@ -48,13 +48,13 @@ struct CompanionView: View {
             VStack(spacing: 4) {
                 Text(state.message)
                     .font(.system(.subheadline, design: .rounded, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.white)
                     .contentTransition(.opacity)
                     .animation(.easeInOut(duration: 0.2), value: state)
 
                 Text(state.detailMessage)
                     .font(.system(.caption, design: .rounded))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.white.opacity(0.55))
                     .multilineTextAlignment(.center)
                     .contentTransition(.opacity)
                     .animation(.easeInOut(duration: 0.2), value: state)

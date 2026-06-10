@@ -126,9 +126,12 @@ struct ContentView: View {
             .fileExporter(
                 isPresented: $vm.showingExporter,
                 document: vm.exportDocument,
-                contentType: .commaSeparatedText,
+                contentType: .plainText,
                 defaultFilename: vm.exportFilename
             ) { _ in }
+            .sheet(isPresented: $vm.showingExportPreview) {
+                ExportPreviewSheet(vm: vm)
+            }
             .navigationDestination(for: String.self) { _ in
                 SettingsView().environmentObject(vm)
             }
@@ -567,6 +570,341 @@ extension CompanionState {
         case .alarmed: return Color(red: 0.98, green: 0.52, blue: 0.16)
         case .peak:    return Color(red: 0.98, green: 0.24, blue: 0.24)
         }
+    }
+}
+
+// MARK: - Export Preview Sheet
+
+struct ExportPreviewSheet: View {
+    @ObservedObject var vm: SPLMonitorViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color(red: 0.05, green: 0.07, blue: 0.11).ignoresSafeArea()
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 16) {
+
+                        // ── Header ─────────────────────────────────────
+                        VStack(spacing: 6) {
+                            Image("Logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 56, height: 56)
+                                .clipShape(Circle())
+                            Text("Session Report")
+                                .font(.system(.title2, design: .rounded, weight: .bold))
+                            Text(vm.session.startedAt, style: .date)
+                                .font(.system(.subheadline, design: .rounded))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.top, 8)
+
+                        // ── Summary cards ──────────────────────────────
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                            ExportStatCard(label: "Duration",    value: vm.session.durationFormatted,                                  icon: "clock.fill",           color: .dmCyan)
+                            ExportStatCard(label: "Leq",         value: String(format: "%.1f dB", vm.session.leq),                     icon: "waveform",             color: .dmCyan)
+                            ExportStatCard(label: "Peak",         value: String(format: "%.1f dB", vm.session.peakSPL),                icon: "chart.bar.fill",       color: .orange)
+                            ExportStatCard(label: "Samples",      value: "\(vm.session.samples.count)",                               icon: "number",               color: .secondary)
+                        }
+
+                        // ── OSHA ───────────────────────────────────────
+                        ExposureCard(
+                            title: "OSHA",
+                            subtitle: "29 CFR 1910.95 · 5 dB exchange",
+                            dose: vm.session.oshaDosePercent,
+                            twa: vm.session.oshaTWA,
+                            actionLevel: 50,
+                            limit: 100,
+                            limitLabel: "PEL"
+                        )
+
+                        // ── NIOSH ──────────────────────────────────────
+                        ExposureCard(
+                            title: "NIOSH",
+                            subtitle: "REL · 3 dB exchange (more protective)",
+                            dose: vm.session.nioshDosePercent,
+                            twa: vm.session.nioshTWA,
+                            actionLevel: 50,
+                            limit: 100,
+                            limitLabel: "REL"
+                        )
+
+                        // ── EU ─────────────────────────────────────────
+                        EUCard(session: vm.session)
+
+                        // ── Threshold events ───────────────────────────
+                        ThresholdEventsCard(session: vm.session)
+
+                        // ── Disclaimer ─────────────────────────────────
+                        Text("Practical monitoring only. deciMate is not a certified Class 1/Class 2 sound level meter. Do not use as the sole basis for legal or occupational health compliance.")
+                            .font(.system(.caption2, design: .rounded))
+                            .foregroundStyle(.tertiary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 8)
+                            .padding(.bottom, 8)
+                    }
+                    .padding(16)
+                }
+            }
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") { dismiss() }
+                        .foregroundStyle(.secondary)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        dismiss()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            vm.confirmExport()
+                        }
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 13, weight: .semibold))
+                            Text("Share Report")
+                                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                        }
+                        .foregroundStyle(Color.dmCyan)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Export Stat Card
+
+private struct ExportStatCard: View {
+    let label: String
+    let value: String
+    let icon: String
+    let color: Color
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(color == .secondary ? Color.secondary : color)
+            Text(value)
+                .font(.system(.headline, design: .rounded, weight: .bold))
+                .foregroundStyle(.white)
+                .minimumScaleFactor(0.7)
+                .lineLimit(1)
+            Text(label)
+                .font(.system(.caption2, design: .rounded))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(Color(red: 0.10, green: 0.13, blue: 0.20), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Color.white.opacity(0.07), lineWidth: 1))
+    }
+}
+
+// MARK: - Exposure Card (OSHA / NIOSH)
+
+private struct ExposureCard: View {
+    let title: String
+    let subtitle: String
+    let dose: Double
+    let twa: Double
+    let actionLevel: Double
+    let limit: Double
+    let limitLabel: String
+
+    private var statusColor: Color {
+        if dose >= limit   { return .red }
+        if dose >= actionLevel { return .yellow }
+        return Color(red: 0.20, green: 0.82, blue: 0.62)
+    }
+
+    private var statusLabel: String {
+        if dose >= limit   { return "EXCEEDS \(limitLabel)" }
+        if dose >= actionLevel { return "Above Action Level" }
+        return "Within Limits"
+    }
+
+    private var progress: Double { min(dose / limit, 1.0) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    Text(subtitle)
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Text(statusLabel)
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .foregroundStyle(statusColor)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(statusColor.opacity(0.15), in: Capsule())
+            }
+
+            // Dose bar
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text("Dose")
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(String(format: "%.1f%%", dose))
+                        .font(.system(.caption, design: .rounded, weight: .bold))
+                        .foregroundStyle(statusColor)
+                }
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white.opacity(0.08))
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(red: 0.20, green: 0.82, blue: 0.62), .yellow, .red],
+                                    startPoint: .leading, endPoint: .trailing
+                                )
+                            )
+                            .frame(width: geo.size.width * progress)
+                    }
+                }
+                .frame(height: 6)
+            }
+
+            // TWA
+            HStack {
+                Text("8-hr TWA")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(String(format: "%.1f dB(A)", twa))
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white)
+            }
+        }
+        .padding(16)
+        .background(Color(red: 0.10, green: 0.13, blue: 0.20), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.white.opacity(0.07), lineWidth: 1))
+    }
+}
+
+// MARK: - EU Card
+
+private struct EUCard: View {
+    let session: MeasurementSession
+
+    private var statusColor: Color {
+        switch session.euComplianceStatus {
+        case .compliant:         return Color(red: 0.20, green: 0.82, blue: 0.62)
+        case .lowerActionValue:  return .yellow
+        case .upperActionValue:  return .orange
+        case .exceedsLimit:      return .red
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("EU Directive 2003/10/EC")
+                        .font(.system(.subheadline, design: .rounded, weight: .bold))
+                    Text("Noise at Work Directive")
+                        .font(.system(.caption2, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+            }
+
+            HStack {
+                Text("LEX,8h")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(String(format: "%.1f dB", session.euLex8h))
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(statusColor)
+            }
+
+            Text(session.euComplianceStatus.label)
+                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .foregroundStyle(statusColor)
+
+            // Reference thresholds
+            HStack(spacing: 0) {
+                ForEach([("80 dB", "Lower"), ("85 dB", "Upper"), ("87 dB", "Limit")], id: \.0) { val, lbl in
+                    VStack(spacing: 2) {
+                        Text(val)
+                            .font(.system(size: 11, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                        Text(lbl)
+                            .font(.system(size: 9, design: .rounded))
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    if val != "87 dB" {
+                        Divider().frame(height: 28)
+                    }
+                }
+            }
+            .padding(10)
+            .background(Color.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 10))
+        }
+        .padding(16)
+        .background(Color(red: 0.10, green: 0.13, blue: 0.20), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.white.opacity(0.07), lineWidth: 1))
+    }
+}
+
+// MARK: - Threshold Events Card
+
+private struct ThresholdEventsCard: View {
+    let session: MeasurementSession
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Threshold Events")
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+
+            ForEach([
+                ("Warning",  session.warningEventCount,  Color.yellow),
+                ("Critical", session.criticalEventCount, Color.orange),
+                ("Peak",     session.peakEventCount,     Color.red)
+            ], id: \.0) { label, count, color in
+                HStack {
+                    Circle().fill(color).frame(width: 8, height: 8)
+                    Text(label)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("\(count) samples")
+                        .font(.system(.caption, design: .rounded, weight: .semibold))
+                        .foregroundStyle(count > 0 ? color : .secondary)
+                }
+            }
+
+            HStack {
+                Image(systemName: "clock")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                Text("Time above warning")
+                    .font(.system(.caption, design: .rounded))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(String(format: "%.1f%%", session.timeAboveWarningPercent))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(session.timeAboveWarningPercent > 20 ? .yellow : .secondary)
+            }
+        }
+        .padding(16)
+        .background(Color(red: 0.10, green: 0.13, blue: 0.20), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.white.opacity(0.07), lineWidth: 1))
     }
 }
 
