@@ -4,113 +4,378 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy — deciMate</title>
-  <meta name="description" content="Privacy Policy for deciMate, an iPhone app by Loud and Beyond / David Torres.">
+  <meta name="description" content="deciMate privacy policy. No tracking, no accounts, no cloud. Audio is never recorded or transmitted.">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #080c13;
-      --card: #111827;
-      --border: rgba(255,255,255,0.10);
-      --cyan: #34d2f8;
-      --blue: #2880f2;
-      --text: #eef2ff;
-      --muted: #93a4bd;
-      --radius: 22px;
+      --bg:     #07090f;
+      --card:   #10151f;
+      --border: rgba(255,255,255,0.07);
+      --cyan:   #34d2f8;
+      --text:   #e8eeff;
+      --muted:  #6b7a96;
+      --green:  #34d999;
     }
+
     html { scroll-behavior: smooth; }
+
     body {
-      background: radial-gradient(ellipse 70% 45% at 50% -10%, rgba(52,210,248,0.14), transparent), var(--bg);
+      background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-      line-height: 1.65;
+      line-height: 1.75;
       -webkit-font-smoothing: antialiased;
-      padding: 0 20px 56px;
     }
-    .wrap { max-width: 860px; margin: 0 auto; }
-    header { padding: 34px 0 46px; }
-    .back { color: var(--cyan); text-decoration: none; font-weight: 700; font-size: 14px; }
-    .badge {
-      display: inline-flex; margin-top: 48px; margin-bottom: 18px; padding: 7px 13px;
-      border: 1px solid rgba(52,210,248,0.25); border-radius: 999px;
-      color: var(--cyan); background: rgba(52,210,248,0.08); font-size: 13px; font-weight: 700;
+
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Nav ─────────────────────────────────────────────── */
+    .nav {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(7,9,15,.9);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
     }
-    h1 { font-size: clamp(42px, 8vw, 72px); line-height: 1; letter-spacing: -2px; margin-bottom: 18px; }
-    .lead { color: var(--muted); font-size: 19px; max-width: 720px; }
-    main {
-      background: rgba(17,24,39,0.78); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: clamp(24px, 4vw, 44px); box-shadow: 0 28px 80px rgba(0,0,0,0.34);
+    .nav-inner {
+      max-width: 800px; margin: 0 auto;
+      display: flex; align-items: center; height: 58px; gap: 12px;
     }
-    h2 { font-size: 24px; margin-top: 34px; margin-bottom: 10px; letter-spacing: -0.4px; }
-    h2:first-child { margin-top: 0; }
-    p, li { color: var(--muted); font-size: 16px; }
-    ul { padding-left: 22px; margin: 10px 0 0; }
-    a { color: var(--cyan); }
-    strong { color: var(--text); }
-    .note {
-      border-left: 3px solid var(--cyan); padding: 14px 16px; margin: 22px 0;
-      background: rgba(52,210,248,0.07); border-radius: 12px;
+    .nav-brand {
+      display: flex; align-items: center; gap: 9px;
+      font-weight: 700; font-size: 16px; color: var(--text);
+      text-decoration: none;
     }
-    footer { color: var(--muted); font-size: 14px; padding-top: 28px; text-align: center; }
+    .nav-brand img { width: 28px; border-radius: 7px; }
+    .nav-back {
+      margin-left: auto;
+      font-size: 13px; color: var(--muted);
+      display: flex; align-items: center; gap: 5px;
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .nav-back:hover { color: var(--text); text-decoration: none; }
+
+    /* ─── Content ─────────────────────────────────────────── */
+    .page { max-width: 800px; margin: 0 auto; padding: 60px 24px 100px; }
+
+    .page-header { margin-bottom: 52px; }
+    .page-header h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800; letter-spacing: -1.5px;
+      margin-bottom: 10px;
+    }
+    .page-header .meta {
+      font-size: 14px; color: var(--muted);
+    }
+
+    /* Summary pills */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 56px;
+    }
+    .summary-pill {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .summary-pill .icon {
+      font-size: 20px; flex-shrink: 0;
+    }
+    .summary-pill strong { font-size: 13px; font-weight: 700; display: block; }
+    .summary-pill span   { font-size: 12px; color: var(--muted); }
+
+    /* Sections */
+    .policy-section { margin-bottom: 48px; }
+    .policy-section h2 {
+      font-size: 19px; font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-section p {
+      font-size: 15px; color: #b0bdd4;
+      margin-bottom: 14px; line-height: 1.75;
+    }
+    .policy-section ul {
+      list-style: none; padding: 0;
+      margin-bottom: 14px;
+    }
+    .policy-section ul li {
+      font-size: 15px; color: #b0bdd4;
+      padding: 6px 0 6px 20px;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-section ul li:last-child { border-bottom: none; }
+    .policy-section ul li::before {
+      content: '→';
+      position: absolute; left: 0;
+      color: var(--cyan); font-size: 12px;
+      top: 8px;
+    }
+
+    /* Highlight box */
+    .highlight {
+      background: rgba(52,210,248,.06);
+      border: 1px solid rgba(52,210,248,.18);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      font-size: 14px; color: #a8d8f0;
+      line-height: 1.7;
+    }
+
+    /* Contact card */
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap;
+    }
+    .contact-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .contact-card p  { font-size: 14px; color: var(--muted); }
+
+    /* Footer */
+    .page-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      margin-top: 56px;
+      font-size: 13px; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: space-between; align-items: center;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <a class="back" href="index.html">← Back to deciMate</a>
-      <div class="badge">Privacy Policy</div>
-      <h1>deciMate Privacy Policy</h1>
-      <p class="lead">deciMate is designed as a practical sound-level monitoring tool that works locally on your device. We do not sell personal data, track users across apps or websites, or require an account.</p>
-    </header>
 
-    <main>
-      <h2>Effective date</h2>
-      <p>June 10, 2026</p>
-
-      <h2>Who we are</h2>
-      <p>deciMate is provided by Loud and Beyond / David Torres. For privacy or support questions, contact <a href="mailto:info@loudandbeyond.com">info@loudandbeyond.com</a>.</p>
-
-      <h2>Information deciMate uses</h2>
-      <ul>
-        <li><strong>Microphone access:</strong> deciMate uses the iPhone microphone to estimate sound levels and display practical SPL readings. Audio is processed for measurement purposes.</li>
-        <li><strong>Local session data:</strong> deciMate may store sound-level readings, thresholds, calibration settings, and session history locally on your device so you can review or export your measurements.</li>
-        <li><strong>Local network access:</strong> if you enable deciMate Live Link, the app may make live measurement data available to other devices on the same local network.</li>
-      </ul>
-
-      <h2>Audio recordings</h2>
-      <p>deciMate is intended to analyze sound levels, not to record conversations or upload audio. The app does not send microphone audio to our servers.</p>
-
-      <h2>Data sharing</h2>
-      <p>We do not sell, rent, or trade your personal information. Session exports are user-controlled: if you export a CSV or share measurement data, that action is initiated by you.</p>
-
-      <h2>Analytics and tracking</h2>
-      <p>The MVP version of deciMate is planned with no third-party advertising tracking and no account system. If analytics, crash reporting, subscriptions, or cloud features are added in the future, this policy will be updated before release.</p>
-
-      <h2>deciMate Live Link</h2>
-      <p>Live Link is a local-network feature. When enabled, compatible clients on your network may read live SPL values and status information from your iPhone. Only enable Live Link on networks you trust.</p>
-
-      <h2>Children’s privacy</h2>
-      <p>deciMate is not directed to children under 13. We do not knowingly collect personal information from children.</p>
-
-      <h2>Your choices</h2>
-      <ul>
-        <li>You can deny or revoke microphone permission in iOS Settings.</li>
-        <li>You can delete local session history inside the app where supported, or remove the app from your device.</li>
-        <li>You can keep Live Link disabled unless you need local-network streaming.</li>
-      </ul>
-
-      <h2>Important measurement note</h2>
-      <div class="note">
-        <p>deciMate provides practical sound-level monitoring using the device microphone. It is not a certified Class 1 or Class 2 sound level meter and should not be used as the sole tool for legal, regulatory, or compliance measurements.</p>
-      </div>
-
-      <h2>Changes to this policy</h2>
-      <p>We may update this policy as deciMate evolves. Updates will be posted on this page with a revised effective date.</p>
-
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:info@loudandbeyond.com">info@loudandbeyond.com</a></p>
-    </main>
-
-    <footer>© 2026 Loud and Beyond / David Torres. All rights reserved.</footer>
+<!-- ─── NAV ──────────────────────────────────────────────────────── -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="deciMate">
+      deciMate
+    </a>
+    <a class="nav-back" href="index.html">
+      ← Back to site
+    </a>
   </div>
+</header>
+
+<!-- ─── PAGE ─────────────────────────────────────────────────────── -->
+<main class="page">
+
+  <div class="page-header">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Last updated: June 2026 · Applies to deciMate for iOS</p>
+  </div>
+
+  <!-- Quick summary -->
+  <div class="summary-grid">
+    <div class="summary-pill">
+      <span class="icon">🎙️</span>
+      <div>
+        <strong>Microphone</strong>
+        <span>Used only for live SPL estimation. Never recorded.</span>
+      </div>
+    </div>
+    <div class="summary-pill">
+      <span class="icon">📱</span>
+      <div>
+        <strong>Data stays on device</strong>
+        <span>Sessions, calibration, and settings are local only.</span>
+      </div>
+    </div>
+    <div class="summary-pill">
+      <span class="icon">🚫</span>
+      <div>
+        <strong>No tracking</strong>
+        <span>No analytics, no advertising, no third-party SDKs.</span>
+      </div>
+    </div>
+    <div class="summary-pill">
+      <span class="icon">👤</span>
+      <div>
+        <strong>No account</strong>
+        <span>No sign-up, no login, no personal data collected.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <div class="policy-section">
+    <h2>1. Who we are</h2>
+    <p>
+      deciMate is developed by <strong>David Torres / Loud and Beyond</strong>.
+      This privacy policy explains what data the app accesses, how it is handled,
+      and what — if anything — ever leaves your device.
+    </p>
+    <p>Contact: <a href="mailto:info@loudandbeyond.com">info@loudandbeyond.com</a></p>
+  </div>
+
+  <!-- 2 -->
+  <div class="policy-section">
+    <h2>2. Microphone access</h2>
+    <div class="highlight">
+      deciMate requests access to your device microphone solely to measure sound pressure levels.
+      <strong>No audio is ever recorded, stored, or transmitted.</strong>
+    </div>
+    <p>
+      The app uses Apple's AVAudioEngine to tap the microphone input.
+      For each 4096-sample buffer, the RMS (root mean square) value is computed
+      and immediately converted to a dB reading. The raw audio samples are
+      discarded instantly — they never touch storage, network, or any buffer
+      outside the calculation.
+    </p>
+  </div>
+
+  <!-- 3 -->
+  <div class="policy-section">
+    <h2>3. Data stored on your device</h2>
+    <p>The following data is stored <em>locally on your iPhone only</em>, using Apple's UserDefaults and in-memory session storage:</p>
+    <ul>
+      <li>Calibration offset — a single dB number, saved in UserDefaults</li>
+      <li>Threshold settings — warning, critical, and peak dB values</li>
+      <li>Measurement weighting and response preferences</li>
+      <li>Active session samples — held in memory only, not written to disk unless you export</li>
+    </ul>
+    <p>
+      None of this data is transmitted to any server, shared with any third party,
+      or synced to iCloud.
+    </p>
+  </div>
+
+  <!-- 4 -->
+  <div class="policy-section">
+    <h2>4. Data you choose to export</h2>
+    <p>
+      Tapping <strong>Export</strong> generates a noise exposure report on your device.
+      The file is presented via the standard iOS share sheet — you control
+      exactly where it goes (Files, Mail, AirDrop, etc.).
+      deciMate does not receive, store, or transmit a copy of the exported file.
+    </p>
+    <p>
+      The exported report includes: session timestamps, SPL samples, peak readings,
+      threshold states, Leq, OSHA/NIOSH dose calculations, and EU LEX,8h.
+      It contains no device identifiers, location data, or personal information.
+    </p>
+  </div>
+
+  <!-- 5 -->
+  <div class="policy-section">
+    <h2>5. deciMate Live Link (optional feature)</h2>
+    <p>
+      Live Link is an <strong>opt-in</strong> feature that you must explicitly start by tapping
+      <em>"Start Live Link"</em> in Settings. When active, it opens a local HTTP server
+      on port 8080 that responds with a live JSON snapshot of the current SPL reading.
+    </p>
+    <ul>
+      <li>Only runs when you actively start it — it is completely off by default</li>
+      <li>Only accessible to devices on the same local Wi-Fi network</li>
+      <li>Not accessible over the internet</li>
+      <li>Does not log, store, or forward any requests or data</li>
+      <li>Stops completely when you tap "Stop Live Link" or close the app</li>
+    </ul>
+    <p>
+      This feature requires iOS to grant local network access.
+      The permission prompt will appear the first time you start Live Link.
+    </p>
+  </div>
+
+  <!-- 6 -->
+  <div class="policy-section">
+    <h2>6. Analytics and tracking</h2>
+    <p>
+      deciMate contains <strong>no analytics framework, no advertising SDK,
+      and no tracking code</strong> of any kind. We do not collect:
+    </p>
+    <ul>
+      <li>Usage statistics or event tracking</li>
+      <li>Crash reports (other than those Apple collects if you opt in to sharing with developers)</li>
+      <li>Device identifiers (IDFA, IDFV, or any other ID)</li>
+      <li>Location data</li>
+      <li>Any personal information</li>
+    </ul>
+  </div>
+
+  <!-- 7 -->
+  <div class="policy-section">
+    <h2>7. Third-party services and SDKs</h2>
+    <p>
+      deciMate uses <strong>no third-party libraries, SDKs, or APIs</strong>.
+      The entire app is built using Apple's own frameworks:
+    </p>
+    <ul>
+      <li>SwiftUI — user interface</li>
+      <li>AVFoundation — microphone access and audio processing</li>
+      <li>Combine — reactive data flow</li>
+      <li>Network (NWListener) — Live Link local HTTP server</li>
+      <li>Charts — session history graph</li>
+      <li>UniformTypeIdentifiers — file export</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <div class="policy-section">
+    <h2>8. Children's privacy</h2>
+    <p>
+      deciMate does not knowingly collect any information from children under 13.
+      The app contains no advertising, in-app purchases targeting children,
+      or any features designed to collect data from minors.
+    </p>
+  </div>
+
+  <!-- 9 -->
+  <div class="policy-section">
+    <h2>9. Apple's data collection</h2>
+    <p>
+      If you have opted in to sharing crash and usage data with app developers
+      (via iOS Settings → Privacy → Analytics &amp; Improvements), Apple may provide
+      us with anonymised crash logs. This is controlled entirely by your iOS settings
+      and Apple's own privacy policy — we cannot change what Apple collects on your behalf.
+    </p>
+  </div>
+
+  <!-- 10 -->
+  <div class="policy-section">
+    <h2>10. Changes to this policy</h2>
+    <p>
+      If this privacy policy changes materially, the updated version will be
+      posted at this URL. The "last updated" date at the top of this page will
+      reflect the most recent revision. Continued use of the app after changes
+      are posted constitutes acceptance of the revised policy.
+    </p>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact-card">
+    <span style="font-size:32px">✉️</span>
+    <div>
+      <h3>Questions about privacy?</h3>
+      <p>
+        Reach out any time at
+        <a href="mailto:info@loudandbeyond.com">info@loudandbeyond.com</a>.
+        We'll respond within 48 hours.
+      </p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>© 2026 Loud and Beyond / David Torres</span>
+    <a href="index.html">← Back to deciMate</a>
+    <span>deciMate is not a certified Class 1/Class 2 sound level meter.</span>
+  </div>
+
+</main>
+
 </body>
 </html>

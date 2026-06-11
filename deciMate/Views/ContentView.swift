@@ -123,14 +123,14 @@ struct ContentView: View {
                     }
                 }
             }
-            .fileExporter(
-                isPresented: $vm.showingExporter,
-                document: vm.exportDocument,
-                contentType: .plainText,
-                defaultFilename: vm.exportFilename
-            ) { _ in }
             .sheet(isPresented: $vm.showingExportPreview) {
                 ExportPreviewSheet(vm: vm)
+                    .fileExporter(
+                        isPresented: $vm.showingExporter,
+                        document: vm.exportDocument,
+                        contentType: .plainText,
+                        defaultFilename: vm.exportFilename
+                    ) { _ in }
             }
             .navigationDestination(for: String.self) { _ in
                 SettingsView().environmentObject(vm)
@@ -658,10 +658,7 @@ struct ExportPreviewSheet: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        dismiss()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            vm.confirmExport()
-                        }
+                        vm.showingExporter = true
                     } label: {
                         HStack(spacing: 6) {
                             Image(systemName: "square.and.arrow.up")

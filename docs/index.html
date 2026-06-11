@@ -4,26 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>deciMate — Sound Level Monitor for iPhone</title>
-  <meta name="description" content="A practical SPL monitor for iPhone. Live dB readings, smart threshold alerts, session logging, and local network Live Link workflows.">
+  <meta name="description" content="deciMate turns your iPhone into a practical SPL monitor. Live dB readings, OSHA/NIOSH noise exposure reports, smart threshold alerts, and a friendly mascot that reacts to your sound levels.">
   <meta property="og:title" content="deciMate — Sound Level Monitor">
-  <meta property="og:description" content="Practical SPL monitoring, smart alerts, session logging, and local-network workflows for rehearsals, DJ sets, and live events.">
-  <meta property="og:image" content="https://maxdavemsp.github.io/deciMate/logo.png">
+  <meta property="og:description" content="Live SPL monitoring, noise exposure reports, smart alerts, and a friendly mascot for rehearsals, DJ sets, and live events.">
+  <meta property="og:image" content="logo.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <style>
-    /* ── Reset & base ─────────────────────────────────────────── */
+    /* ─── Reset ─────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #080c13;
-      --bg2:     #0d1320;
-      --card:    #111827;
-      --border:  rgba(255,255,255,0.07);
-      --cyan:    #34d2f8;
-      --blue:    #2880f2;
-      --text:    #eef2ff;
-      --muted:   #7c8ca8;
-      --radius:  24px;
+      --bg:        #07090f;
+      --bg2:       #0c1018;
+      --card:      #10151f;
+      --card2:     #141920;
+      --border:    rgba(255,255,255,0.07);
+      --border2:   rgba(255,255,255,0.04);
+      --cyan:      #34d2f8;
+      --blue:      #2472e8;
+      --text:      #e8eeff;
+      --muted:     #6b7a96;
+      --muted2:    #4a5568;
+      --green:     #34d999;
+      --yellow:    #f5c842;
+      --orange:    #f59332;
+      --red:       #f04040;
     }
 
     html { scroll-behavior: smooth; }
@@ -32,645 +38,821 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ── Layout ──────────────────────────────────────────────── */
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
 
-    /* ── Nav ─────────────────────────────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(8,12,19,0.85);
+    /* ─── Utility ───────────────────────────────────────────────────── */
+    .wrap    { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap-sm { max-width: 720px;  margin: 0 auto; padding: 0 24px; }
+
+    /* ─── Nav ───────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(7,9,15,0.88);
       border-bottom: 1px solid var(--border);
-      padding: 14px 0;
     }
-    nav .inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center;
+      height: 60px; gap: 32px;
     }
-    .nav-logo {
+    .nav-brand {
       display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--text);
+      font-weight: 700; font-size: 17px; letter-spacing: -.3px;
+      flex-shrink: 0;
     }
-    .nav-logo img {
-      width: 32px; height: 32px; border-radius: 8px;
+    .nav-brand img { width: 30px; height: 30px; border-radius: 8px; }
+    .nav-links {
+      display: flex; gap: 24px; list-style: none;
+      margin-left: auto;
     }
-    .nav-logo span {
-      font-size: 17px; font-weight: 700; letter-spacing: -0.3px;
+    .nav-links a {
+      font-size: 14px; color: var(--muted);
+      transition: color .18s;
     }
+    .nav-links a:hover { color: var(--text); }
     .nav-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--cyan); color: #050c15;
-      font-weight: 700; font-size: 14px;
-      padding: 9px 18px; border-radius: 99px;
-      text-decoration: none;
-      transition: opacity .2s;
+      margin-left: 8px;
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--cyan); color: #060b14;
+      font-weight: 700; font-size: 13px;
+      padding: 8px 16px; border-radius: 99px;
+      transition: opacity .18s, transform .18s;
+      flex-shrink: 0;
     }
-    .nav-cta:hover { opacity: 0.85; }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
 
-    /* ── Hero ────────────────────────────────────────────────── */
+    /* ─── Hero ──────────────────────────────────────────────────────── */
     .hero {
-      padding: 100px 0 80px;
+      padding: 110px 0 80px;
       text-align: center;
       position: relative;
-      overflow: hidden;
     }
-    .hero::before {
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .hero-glow::before {
       content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(52,210,248,0.14), transparent),
-        radial-gradient(ellipse 40% 30% at 80% 60%, rgba(40,128,242,0.08), transparent);
-      pointer-events: none;
+      position: absolute;
+      top: -160px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(52,210,248,.09) 0%, transparent 70%);
     }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: rgba(52,210,248,0.10);
-      border: 1px solid rgba(52,210,248,0.25);
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(52,210,248,.08);
+      border: 1px solid rgba(52,210,248,.2);
       color: var(--cyan);
-      font-size: 13px; font-weight: 600;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
       padding: 6px 14px; border-radius: 99px;
       margin-bottom: 28px;
     }
-    .hero-badge span { width: 7px; height: 7px; background: var(--cyan); border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-    h1 {
-      font-size: clamp(48px, 9vw, 88px);
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1;
-      margin-bottom: 22px;
+    .hero-eyebrow .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+      animation: blink 2.2s ease-in-out infinite;
     }
-    h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--cyan), var(--blue));
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-size: clamp(44px, 8.5vw, 90px);
+      font-weight: 800;
+      letter-spacing: -3px;
+      line-height: .95;
+      margin-bottom: 24px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--cyan) 20%, var(--blue) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .hero-sub {
-      font-size: clamp(17px, 2.5vw, 22px);
+      font-size: clamp(16px, 2.2vw, 20px);
       color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 40px;
+      max-width: 540px;
+      margin: 0 auto 44px;
+      line-height: 1.65;
     }
 
     .hero-actions {
-      display: flex; justify-content: center; align-items: center;
-      gap: 14px; flex-wrap: wrap;
+      display: flex; justify-content: center;
+      align-items: center; gap: 14px; flex-wrap: wrap;
     }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: linear-gradient(135deg, var(--cyan), var(--blue));
-      color: #fff; font-weight: 700; font-size: 16px;
-      padding: 14px 28px; border-radius: 16px;
-      text-decoration: none;
-      box-shadow: 0 8px 32px rgba(52,210,248,0.30);
-      transition: transform .2s, box-shadow .2s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(52,210,248,0.40); }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid var(--border);
-      color: var(--text); font-weight: 600; font-size: 16px;
-      padding: 14px 28px; border-radius: 16px;
-      text-decoration: none;
-      transition: background .2s;
-    }
-    .btn-secondary:hover { background: rgba(255,255,255,0.05); }
-
-    /* App Store badge */
-    .app-store-btn {
-      display: inline-block;
+    .btn-app-store {
       transition: transform .2s, opacity .2s;
     }
-    .app-store-btn:hover { transform: translateY(-2px); opacity: .9; }
-    .app-store-btn img { height: 52px; }
+    .btn-app-store:hover { transform: translateY(-2px); opacity: .9; }
+    .btn-app-store img  { height: 50px; }
 
-    /* ── Phone mockups ───────────────────────────────────────── */
-    .phones {
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--text); font-size: 15px; font-weight: 600;
+      padding: 12px 22px; border-radius: 14px;
+      transition: background .18s, border-color .18s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.14); }
+
+    /* ─── Phones ────────────────────────────────────────────────────── */
+    .phones-wrap {
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 0;
-      margin: 70px auto -40px;
-      max-width: 700px;
+      display: flex; justify-content: center; align-items: flex-end;
+      gap: 0; margin: 72px auto -60px;
+      max-width: 760px;
     }
     .phone {
-      position: relative;
-      flex-shrink: 0;
-      transition: transform .4s;
+      position: relative; flex-shrink: 0;
+      transition: transform .4s cubic-bezier(.22,.68,0,1.2);
     }
-    .phone:hover { transform: translateY(-8px); }
-    .phone-frame {
-      width: 200px;
-      background: #1a1f2e;
-      border-radius: 38px;
-      border: 2px solid rgba(255,255,255,0.12);
+    .phone:hover { transform: translateY(-10px) !important; }
+    .phone-shell {
+      background: #141922;
+      border-radius: 40px;
+      border: 1.5px solid rgba(255,255,255,.12);
       overflow: hidden;
-      box-shadow:
-        0 40px 80px rgba(0,0,0,0.6),
-        0 0 0 1px rgba(255,255,255,0.06) inset;
+      box-shadow: 0 48px 100px rgba(0,0,0,.7), 0 0 0 .5px rgba(255,255,255,.06) inset;
     }
-    .phone-frame img { width: 100%; display: block; }
-    .phone.center .phone-frame { width: 230px; border-color: rgba(52,210,248,0.30); }
-    .phone.center { z-index: 2; }
-    .phone.left { transform: rotate(-6deg) translateX(30px); z-index: 1; }
-    .phone.right { transform: rotate(6deg) translateX(-30px); z-index: 1; }
-    .phone.left:hover  { transform: rotate(-6deg) translateX(30px) translateY(-8px); }
-    .phone.right:hover { transform: rotate(6deg)  translateX(-30px) translateY(-8px); }
+    .phone-shell img  { width: 100%; }
+    .phone.c          { z-index: 3; }
+    .phone.l          { transform: rotate(-7deg) translateX(36px); z-index: 2; }
+    .phone.r          { transform: rotate(7deg)  translateX(-36px); z-index: 2; }
+    .phone.c .phone-shell { width: 240px; border-color: rgba(52,210,248,.28); }
+    .phone.l .phone-shell,
+    .phone.r .phone-shell { width: 196px; }
+    .phone.l:hover { transform: rotate(-7deg) translateX(36px) translateY(-10px) !important; }
+    .phone.r:hover { transform: rotate(7deg)  translateX(-36px) translateY(-10px) !important; }
 
-    /* ── Section headings ────────────────────────────────────── */
-    .section { padding: 100px 0; }
-    .section-label {
-      font-size: 12px; font-weight: 700; letter-spacing: 2px;
-      color: var(--cyan); text-transform: uppercase;
+    /* ─── Divider ───────────────────────────────────────────────────── */
+    .divider-line {
+      border: none;
+      border-top: 1px solid var(--border2);
+      margin: 0;
+    }
+
+    /* ─── Section ───────────────────────────────────────────────────── */
+    .section        { padding: 100px 0; }
+    .section-sm     { padding: 64px 0; }
+    .section-label  {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--cyan);
       margin-bottom: 12px;
     }
     .section-title {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 800; letter-spacing: -1px;
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 800; letter-spacing: -1.5px;
+      line-height: 1.05;
       margin-bottom: 18px;
     }
-    .section-sub {
-      font-size: 18px; color: var(--muted);
-      max-width: 540px;
+    .section-body {
+      font-size: 17px; color: var(--muted);
+      max-width: 500px; line-height: 1.7;
     }
 
-    /* ── Features grid ───────────────────────────────────────── */
+    /* ─── Features grid ─────────────────────────────────────────────── */
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
       margin-top: 56px;
     }
-    .feature-card {
+    .feat {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      transition: border-color .2s, transform .2s;
+      border-radius: 22px;
+      padding: 28px 28px 24px;
+      transition: border-color .2s, transform .25s;
     }
-    .feature-card:hover {
-      border-color: rgba(52,210,248,0.25);
-      transform: translateY(-3px);
+    .feat:hover { border-color: rgba(52,210,248,.22); transform: translateY(-3px); }
+    .feat-icon {
+      width: 44px; height: 44px;
+      background: rgba(52,210,248,.08);
+      border: 1px solid rgba(52,210,248,.15);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 18px;
     }
-    .feature-icon {
-      font-size: 28px; margin-bottom: 16px; display: block;
+    .feat h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feat p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── Mascot split ──────────────────────────────────────────────── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
     }
-    .feature-card h3 {
-      font-size: 18px; font-weight: 700; margin-bottom: 8px;
+    .states-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 36px;
     }
-    .feature-card p {
-      font-size: 15px; color: var(--muted); line-height: 1.55;
+    .state-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .state-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+    .state-row strong { font-size: 13px; font-weight: 700; display: block; }
+    .state-row span   { font-size: 12px; color: var(--muted); }
+
+    .phone-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .phone-pair img {
+      width: 100%; border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(0,0,0,.55);
     }
 
-    /* ── Screenshot scroll ───────────────────────────────────── */
-    .screenshots-row {
-      display: flex;
-      gap: 20px;
-      overflow-x: auto;
-      padding: 16px 0 32px;
+    /* ─── Screenshots carousel ──────────────────────────────────────── */
+    .shots-track {
+      display: flex; gap: 18px;
+      overflow-x: auto; padding: 20px 24px 36px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
-    .screenshots-row::-webkit-scrollbar { display: none; }
-    .screenshots-row .shot {
-      flex-shrink: 0;
-      width: 220px;
+    .shots-track::-webkit-scrollbar { display: none; }
+    .shot {
+      flex-shrink: 0; width: 210px;
       scroll-snap-align: center;
     }
-    .screenshots-row .shot img {
-      width: 100%;
-      border-radius: 28px;
+    .shot img {
+      width: 100%; border-radius: 28px;
       border: 1px solid var(--border);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      display: block;
+      box-shadow: 0 20px 56px rgba(0,0,0,.55);
     }
-    .shot-label {
+    .shot-caption {
       text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 12px;
-      font-weight: 500;
+      font-size: 12px; color: var(--muted);
+      font-weight: 500; margin-top: 10px;
     }
 
-    /* ── Mascot section ──────────────────────────────────────── */
-    .mascot-section {
+    /* ─── Exposure section ──────────────────────────────────────────── */
+    .exposure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 48px;
+    }
+    .exp-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 32px;
-      padding: 60px 48px;
+      border-radius: 20px;
+      padding: 24px;
+    }
+    .exp-card-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .exp-title   { font-size: 15px; font-weight: 700; }
+    .exp-sub     { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .exp-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: .5px;
+      padding: 4px 9px; border-radius: 99px;
+    }
+    .exp-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px;
+    }
+    .exp-row-label { font-size: 12px; color: var(--muted); }
+    .exp-row-val   { font-size: 12px; font-weight: 600; }
+    .exp-bar-wrap {
+      background: rgba(255,255,255,.06);
+      border-radius: 4px; height: 5px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    .exp-bar {
+      height: 100%; border-radius: 4px;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--orange), var(--red));
+    }
+
+    /* ─── Presets ───────────────────────────────────────────────────── */
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 48px;
+    }
+    .preset {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px 18px;
+      transition: border-color .2s, transform .2s;
+    }
+    .preset:hover { border-color: rgba(52,210,248,.2); transform: translateY(-2px); }
+    .preset-icon  { font-size: 24px; margin-bottom: 10px; }
+    .preset h4    { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .preset-desc  { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+    .preset-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .pill {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 99px;
+    }
+    .pill-y { background: rgba(245,200,66,.14); color: var(--yellow); }
+    .pill-o { background: rgba(245,147,50,.14); color: var(--orange); }
+    .pill-r { background: rgba(240,64,64,.14);  color: var(--red); }
+
+    /* ─── Live Link ─────────────────────────────────────────────────── */
+    .livelink {
+      background: linear-gradient(135deg, rgba(52,210,248,.06), rgba(36,114,232,.05));
+      border: 1px solid rgba(52,210,248,.15);
+      border-radius: 28px;
+      padding: 56px;
+      margin-top: 60px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 48px;
       align-items: center;
     }
-    .mascot-states {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .state-pill {
-      display: flex; align-items: center; gap: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-    }
-    .state-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .state-pill p { font-size: 14px; font-weight: 600; }
-    .state-pill span { font-size: 12px; color: var(--muted); display: block; }
-
-    /* ── Thresholds section ──────────────────────────────────── */
-    .presets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin-top: 48px;
-    }
-    .preset-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-    }
-    .preset-card .preset-icon { font-size: 24px; margin-bottom: 10px; }
-    .preset-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .preset-thresholds {
-      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
-    }
-    .thresh-badge {
-      font-size: 11px; font-weight: 700;
-      padding: 2px 7px; border-radius: 99px;
-    }
-
-    /* ── Live Link section ───────────────────────────────────── */
-    .livelink-box {
-      background: linear-gradient(135deg, rgba(52,210,248,0.08), rgba(40,128,242,0.06));
-      border: 1px solid rgba(52,210,248,0.18);
-      border-radius: 28px;
-      padding: 48px;
-      margin-top: 56px;
-    }
-    .code-block {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 20px 24px;
-      font-family: "SF Mono", "Fira Code", monospace;
-      font-size: 13px;
-      color: var(--cyan);
-      margin-top: 20px;
+    .livelink h3 { font-size: 26px; font-weight: 800; letter-spacing: -.8px; margin-bottom: 14px; }
+    .livelink p  { font-size: 15px; color: var(--muted); line-height: 1.7; }
+    .code {
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 24px 26px;
+      font-family: "SF Mono", "Fira Code", Menlo, monospace;
+      font-size: 12.5px;
+      line-height: 1.8;
       overflow-x: auto;
       white-space: pre;
-      line-height: 1.7;
     }
+    .code .key   { color: #a8d8f0; }
+    .code .val   { color: #a8f0d4; }
+    .code .num   { color: #f0c8a8; }
+    .code .str   { color: #f0a8c8; }
+    .code .punc  { color: var(--muted2); }
 
-    /* ── CTA banner ──────────────────────────────────────────── */
-    .cta-banner {
+    /* ─── CTA ───────────────────────────────────────────────────────── */
+    .cta-section {
       text-align: center;
-      padding: 100px 0;
+      padding: 110px 0;
       position: relative;
     }
-    .cta-banner::before {
+    .cta-section::before {
       content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(52,210,248,0.08), transparent);
-      pointer-events: none;
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(52,210,248,.06), transparent);
     }
-    .cta-banner h2 {
-      font-size: clamp(36px, 6vw, 64px);
-      font-weight: 800; letter-spacing: -1.5px;
-      margin-bottom: 20px;
+    .cta-section h2 {
+      font-size: clamp(34px, 5.5vw, 62px);
+      font-weight: 800; letter-spacing: -2px;
+      margin-bottom: 18px;
     }
-    .cta-banner p { font-size: 18px; color: var(--muted); margin-bottom: 40px; }
+    .cta-section p  { font-size: 17px; color: var(--muted); margin-bottom: 42px; }
 
-    /* ── Footer ──────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 40px 0;
+    /* ─── Footer ────────────────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--border2);
+      padding: 36px 0;
     }
-    footer .inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 24px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 16px;
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; flex-wrap: wrap; gap: 20px;
+      align-items: center; justify-content: space-between;
     }
-    footer .logo { display: flex; align-items: center; gap: 10px; }
-    footer .logo img { width: 28px; border-radius: 7px; }
-    footer .logo span { font-weight: 700; font-size: 15px; }
-    footer nav a {
-      color: var(--muted); text-decoration: none; font-size: 14px; margin-left: 24px;
-      transition: color .2s;
+    .footer-brand {
+      display: flex; align-items: center; gap: 10px;
     }
-    footer nav a:hover { color: var(--text); }
-    .footer-copy { color: var(--muted); font-size: 13px; }
+    .footer-brand img { width: 26px; border-radius: 7px; }
+    .footer-brand span { font-size: 14px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 13px; color: var(--muted);
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 12px; color: var(--muted2); }
 
-    /* ── Responsive ──────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      .mascot-section {
-        grid-template-columns: 1fr;
-        padding: 36px 24px;
-      }
-      .phone.left, .phone.right { display: none; }
-      .phone.center .phone-frame { width: 260px; }
-      footer .inner { flex-direction: column; text-align: center; }
-      footer nav a { margin: 0 10px; }
+    /* ─── Responsive ────────────────────────────────────────────────── */
+    @media (max-width: 780px) {
+      .split { grid-template-columns: 1fr; gap: 36px; }
+      .livelink { grid-template-columns: 1fr; padding: 36px 24px; gap: 28px; }
+      .phone.l, .phone.r { display: none; }
+      .phone.c .phone-shell { width: 260px; }
+      .nav-links { display: none; }
+      .phones-wrap { margin-bottom: -30px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Nav ──────────────────────────────────────────────────── -->
-<nav>
-  <div class="inner">
-    <a class="nav-logo" href="#">
-      <img src="logo.png" alt="deciMate logo">
+<!-- ─── NAV ──────────────────────────────────────────────────────── -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <img src="logo.png" alt="deciMate">
       <span>deciMate</span>
     </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#mascot">Mascot</a></li>
+      <li><a href="#exposure">Reports</a></li>
+      <li><a href="#livelink">Live Link</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
     <a class="nav-cta" href="#download">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.42c1.39.07 2.35.74 3.15.8 1.2-.24 2.35-.93 3.64-.84 1.54.12 2.7.72 3.46 1.83-3.18 1.9-2.43 6.04.75 7.2-.59 1.31-1.35 2.6-3 2.87zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-      Download on App Store
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.42c1.39.07 2.35.74 3.15.8 1.2-.24 2.35-.93 3.64-.84 1.54.12 2.7.72 3.46 1.83-3.18 1.9-2.43 6.04.75 7.2-.59 1.31-1.35 2.6-3 2.87zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+      App Store
     </a>
   </div>
-</nav>
+</header>
 
-<!-- ── Hero ─────────────────────────────────────────────────── -->
+<!-- ─── HERO ─────────────────────────────────────────────────────── -->
 <section class="hero">
+  <div class="hero-glow"></div>
   <div class="wrap">
-    <div class="hero-badge">
-      <span></span> Now available on the App Store
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      Now on the App Store
     </div>
-
-    <h1>Sound levels,<br><em>made friendly.</em></h1>
-
+    <h1>Your iPhone.<br><span class="grad">Your sound meter.</span></h1>
     <p class="hero-sub">
       deciMate turns your iPhone into a practical SPL monitor with live dB readings,
-      smart threshold alerts, and an expressive mascot that reacts to your sound levels.
+      OSHA &amp; NIOSH noise exposure reports, smart threshold alerts, and a
+      friendly mascot that reacts to every level change.
     </p>
-
-    <div class="hero-actions">
-      <a class="app-store-btn" id="download" href="https://apps.apple.com/app/decimate" target="_blank" rel="noopener">
+    <div class="hero-actions" id="download">
+      <a class="btn-app-store" href="https://apps.apple.com/app/decimate" target="_blank" rel="noopener">
         <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+      </a>
+      <a class="btn-ghost" href="#features">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+        See what's inside
       </a>
     </div>
   </div>
 
-  <!-- Phone mockups -->
   <div class="wrap">
-    <div class="phones">
-      <div class="phone left">
-        <div class="phone-frame">
-          <img src="screenshots/pro_03_worried.png" alt="deciMate warning state">
-        </div>
+    <div class="phones-wrap">
+      <div class="phone l">
+        <div class="phone-shell"><img src="screenshots/pro_03_worried.png" alt="Warning state"></div>
       </div>
-      <div class="phone center">
-        <div class="phone-frame">
-          <img src="screenshots/pro_02_focused.png" alt="deciMate safe monitoring">
-        </div>
+      <div class="phone c">
+        <div class="phone-shell"><img src="screenshots/pro_02_focused.png" alt="Safe monitoring"></div>
       </div>
-      <div class="phone right">
-        <div class="phone-frame">
-          <img src="screenshots/pro_04_peak.png" alt="deciMate peak alert">
-        </div>
+      <div class="phone r">
+        <div class="phone-shell"><img src="screenshots/pro_04_peak.png" alt="Peak alert"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Features ──────────────────────────────────────────────── -->
-<section class="section">
+<hr class="divider-line">
+
+<!-- ─── FEATURES ─────────────────────────────────────────────────── -->
+<section class="section" id="features">
   <div class="wrap">
     <p class="section-label">Features</p>
-    <h2 class="section-title">Everything you need<br>on stage or in the studio.</h2>
-    <p class="section-sub">Built for rehearsals, DJ sets, small venues, and anyone who cares about sound levels.</p>
+    <h2 class="section-title">Built for the real world,<br>not a lab.</h2>
+    <p class="section-body">
+      Designed for sound engineers, DJs, teachers, venue managers, and anyone
+      who needs a fast, readable picture of what's happening with sound levels.
+    </p>
 
     <div class="features-grid">
-      <div class="feature-card">
-        <span class="feature-icon">🎚️</span>
-        <h3>Live SPL Meter</h3>
-        <p>A beautiful arc meter shows your current dB level in real time, with average and peak tracking across your session.</p>
+      <div class="feat">
+        <div class="feat-icon">🎚️</div>
+        <h3>Live Arc SPL Meter</h3>
+        <p>A 300° arc meter fills in real time as levels rise — cyan for safe, shifting through yellow and orange to red at peak. Average and session peak always visible.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">🤖</span>
+      <div class="feat">
+        <div class="feat-icon">🤖</div>
         <h3>Expressive Mascot</h3>
-        <p>A tiny audio-native mascot with white oval eyes reacts to your levels — calm when it's quiet, panicked at peak events.</p>
+        <p>A tiny audio-native mascot with white oval eyes reacts to every state change — calm waveform smile when quiet, panicked × eyes at peak events. Spring animations, random blinks, EQ bar ears.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">⚡</span>
+      <div class="feat">
+        <div class="feat-icon">⚡</div>
         <h3>Smart Thresholds</h3>
-        <p>Set warning, critical, and peak thresholds. Choose from presets for classrooms, concerts, studios, and more — or go fully custom.</p>
+        <p>Warning, Critical, and Peak thresholds shown as tick marks on the arc. The whole UI — mascot, chart, metric pills — shifts color as you cross each one.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">🎯</span>
-        <h3>Calibration</h3>
-        <p>Apply a manual offset using a trusted reference meter or acoustic calibrator to get practical readings for your device.</p>
+      <div class="feat">
+        <div class="feat-icon">📋</div>
+        <h3>Exposure Reports</h3>
+        <p>Every export includes Leq, OSHA dose %, NIOSH dose %, 8-hour TWA, and EU LEX,8h — everything needed for practical noise exposure assessment.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">📊</span>
-        <h3>Session Logging</h3>
-        <p>Every session is recorded with a live chart and CSV export so you can review what happened after the show.</p>
+      <div class="feat">
+        <div class="feat-icon">🎯</div>
+        <h3>Calibration Offset</h3>
+        <p>Apply a manual dB offset using a reference meter or acoustic calibrator. "Match current reading" button sets it in one tap.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-icon">🔗</span>
+      <div class="feat">
+        <div class="feat-icon">📊</div>
+        <h3>Session History Chart</h3>
+        <p>A live area + line chart shows the last 90 samples. Color follows state — green baseline, yellow when worried, red at peak. Exported CSV includes every sample.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔗</div>
         <h3>deciMate Live Link</h3>
-        <p>Stream live SPL data as JSON over your local network to dashboards, scripts, or any HTTP-capable tool on the same Wi-Fi.</p>
+        <p>Optional local-network HTTP server streams a live JSON snapshot of current SPL, average, peak, and state. Poll from any dashboard, script, or HTTP tool on the same Wi-Fi.</p>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔒</div>
+        <h3>Privacy First</h3>
+        <p>No account. No analytics. No cloud. Audio is processed on-device and never recorded or transmitted. Session data stays local until you choose to export it.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Mascot states ──────────────────────────────────────────── -->
-<section class="section" style="padding-top: 0;">
+<hr class="divider-line">
+
+<!-- ─── MASCOT ────────────────────────────────────────────────────── -->
+<section class="section" id="mascot">
   <div class="wrap">
-    <div class="mascot-section">
+    <div class="split">
       <div>
         <p class="section-label">The Mascot</p>
-        <h2 class="section-title" style="font-size: clamp(28px, 4vw, 42px);">Reacts to every<br>level change.</h2>
-        <p style="color: var(--muted); margin-bottom: 32px; font-size: 16px;">
-          deciMate's mascot isn't just decoration. Its expressions change in real time as your levels move through thresholds — you can read the room at a glance, even from across a venue.
+        <h2 class="section-title">Reads the room<br>at a glance.</h2>
+        <p class="section-body">
+          deciMate's mascot isn't decoration — it's a fast visual signal you can
+          read from across a venue without squinting at numbers.
+          Four distinct expressions, physics-based animations, and a
+          waveform mouth that's uniquely deciMate.
         </p>
-        <div class="mascot-states">
-          <div class="state-pill">
-            <div class="state-dot" style="background:#3db87a;"></div>
-            <div><p>Safe</p><span>All good, chill face</span></div>
+
+        <div class="states-grid">
+          <div class="state-row">
+            <div class="state-dot" style="background:var(--green)"></div>
+            <div>
+              <strong>Safe</strong>
+              <span>Calm waveform smile, gentle float</span>
+            </div>
           </div>
-          <div class="state-pill">
-            <div class="state-dot" style="background:#f5c542;"></div>
-            <div><p>Warning</p><span>Worried eyebrows</span></div>
+          <div class="state-row">
+            <div class="state-dot" style="background:var(--yellow)"></div>
+            <div>
+              <strong>Warning</strong>
+              <span>Worried eyebrows, frown</span>
+            </div>
           </div>
-          <div class="state-pill">
-            <div class="state-dot" style="background:#f5933a;"></div>
-            <div><p>Critical</p><span>Open mouth, alarmed</span></div>
+          <div class="state-row">
+            <div class="state-dot" style="background:var(--orange)"></div>
+            <div>
+              <strong>Critical</strong>
+              <span>Alarmed open mouth, steep brows</span>
+            </div>
           </div>
-          <div class="state-pill">
-            <div class="state-dot" style="background:#f03a3a;"></div>
-            <div><p>Peak</p><span>× eyes, scream mode</span></div>
+          <div class="state-row">
+            <div class="state-dot" style="background:var(--red)"></div>
+            <div>
+              <strong>Peak</strong>
+              <span>× eyes, scream mouth, shake</span>
+            </div>
           </div>
         </div>
       </div>
-      <div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-          <img src="screenshots/pro_02_focused.png" alt="Safe state" style="width:100%; border-radius:20px; border:1px solid var(--border);">
-          <img src="screenshots/pro_03_worried.png" alt="Warning state" style="width:100%; border-radius:20px; border:1px solid var(--border);">
-          <img src="screenshots/pro_01_idle.png"    alt="Idle state"    style="width:100%; border-radius:20px; border:1px solid var(--border);">
-          <img src="screenshots/pro_04_peak.png"    alt="Peak state"    style="width:100%; border-radius:20px; border:1px solid var(--border);">
-        </div>
+      <div class="phone-pair">
+        <img src="screenshots/pro_02_focused.png" alt="Safe">
+        <img src="screenshots/pro_03_worried.png" alt="Warning">
+        <img src="screenshots/pro_01_idle.png"    alt="Idle">
+        <img src="screenshots/pro_04_peak.png"    alt="Peak">
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Screenshots scroll ─────────────────────────────────────── -->
-<section class="section" style="padding-top: 0; overflow: hidden;">
+<hr class="divider-line">
+
+<!-- ─── SCREENSHOTS ───────────────────────────────────────────────── -->
+<section class="section-sm">
   <div class="wrap">
     <p class="section-label">App Preview</p>
-    <h2 class="section-title">Every screen, designed<br>with care.</h2>
+    <h2 class="section-title">Every screen.</h2>
   </div>
-  <div style="max-width:1100px; margin:40px auto 0; padding:0 24px;">
-    <div class="screenshots-row">
-      <div class="shot">
-        <img src="screenshots/pro_01_idle.png" alt="Standby screen">
-        <p class="shot-label">Standby</p>
+  <div class="shots-track" style="max-width:1080px;margin:32px auto 0">
+    <div class="shot"><img src="screenshots/pro_01_idle.png" alt="Standby"><p class="shot-caption">Standby</p></div>
+    <div class="shot"><img src="screenshots/pro_02_focused.png" alt="Safe"><p class="shot-caption">Safe levels</p></div>
+    <div class="shot"><img src="screenshots/pro_03_worried.png" alt="Warning"><p class="shot-caption">Warning</p></div>
+    <div class="shot"><img src="screenshots/pro_04_peak.png" alt="Peak"><p class="shot-caption">Peak event</p></div>
+    <div class="shot"><img src="screenshots/pro_05_settings.png" alt="Settings"><p class="shot-caption">Threshold Presets</p></div>
+  </div>
+</section>
+
+<hr class="divider-line">
+
+<!-- ─── EXPOSURE ──────────────────────────────────────────────────── -->
+<section class="section" id="exposure">
+  <div class="wrap">
+    <p class="section-label">Noise Exposure Reports</p>
+    <h2 class="section-title">Export a real report,<br>not just numbers.</h2>
+    <p class="section-body">
+      Every session export includes the calculations that actually matter
+      for noise exposure assessment — not just a raw dB log.
+    </p>
+
+    <div class="exposure-grid">
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <div>
+            <div class="exp-title">OSHA</div>
+            <div class="exp-sub">29 CFR 1910.95 · 5 dB exchange rate</div>
+          </div>
+          <span class="exp-badge" style="background:rgba(52,210,248,.1);color:var(--cyan)">US Standard</span>
+        </div>
+        <div class="exp-row"><span class="exp-row-label">Criterion level</span><span class="exp-row-val">90 dBA / 8 hrs</span></div>
+        <div class="exp-row"><span class="exp-row-label">Action level</span><span class="exp-row-val">85 dBA TWA (50% dose)</span></div>
+        <div class="exp-row"><span class="exp-row-label">PEL</span><span class="exp-row-val">90 dBA TWA (100% dose)</span></div>
+        <div class="exp-bar-wrap"><div class="exp-bar" style="width:40%"></div></div>
+        <div style="font-size:11px;color:var(--muted)">Report shows dose %, 8-hr TWA, and compliance status</div>
       </div>
-      <div class="shot">
-        <img src="screenshots/pro_02_focused.png" alt="Safe monitoring">
-        <p class="shot-label">Safe levels</p>
+
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <div>
+            <div class="exp-title">NIOSH</div>
+            <div class="exp-sub">REL · 3 dB exchange rate · more protective</div>
+          </div>
+          <span class="exp-badge" style="background:rgba(52,217,153,.1);color:var(--green)">Recommended</span>
+        </div>
+        <div class="exp-row"><span class="exp-row-label">Criterion level</span><span class="exp-row-val">85 dBA / 8 hrs</span></div>
+        <div class="exp-row"><span class="exp-row-label">Action level</span><span class="exp-row-val">85 dBA TWA (50% dose)</span></div>
+        <div class="exp-row"><span class="exp-row-label">REL</span><span class="exp-row-val">85 dBA TWA (100% dose)</span></div>
+        <div class="exp-bar-wrap"><div class="exp-bar" style="width:28%"></div></div>
+        <div style="font-size:11px;color:var(--muted)">Stricter 3 dB exchange rate — favoured by occupational health orgs</div>
       </div>
-      <div class="shot">
-        <img src="screenshots/pro_03_worried.png" alt="Warning threshold">
-        <p class="shot-label">Warning</p>
+
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <div>
+            <div class="exp-title">EU Directive 2003/10/EC</div>
+            <div class="exp-sub">Noise at Work Directive</div>
+          </div>
+          <span class="exp-badge" style="background:rgba(100,130,220,.12);color:#8aabf0">EU Standard</span>
+        </div>
+        <div class="exp-row"><span class="exp-row-label">Lower action value</span><span class="exp-row-val">LEX,8h = 80 dB</span></div>
+        <div class="exp-row"><span class="exp-row-label">Upper action value</span><span class="exp-row-val">LEX,8h = 85 dB</span></div>
+        <div class="exp-row"><span class="exp-row-label">Exposure limit</span><span class="exp-row-val">LEX,8h = 87 dB</span></div>
+        <div class="exp-bar-wrap"><div class="exp-bar" style="width:35%"></div></div>
+        <div style="font-size:11px;color:var(--muted)">Report normalises Leq to 8-hour working day (LEX,8h)</div>
       </div>
-      <div class="shot">
-        <img src="screenshots/pro_04_peak.png" alt="Peak event">
-        <p class="shot-label">Peak event</p>
-      </div>
-      <div class="shot">
-        <img src="screenshots/pro_05_settings.png" alt="Settings & presets">
-        <p class="shot-label">Presets</p>
+
+      <div class="exp-card">
+        <div class="exp-card-header">
+          <div>
+            <div class="exp-title">Leq — Equivalent Level</div>
+            <div class="exp-sub">Energy-averaged SPL · the correct dB average</div>
+          </div>
+          <span class="exp-badge" style="background:rgba(245,200,66,.1);color:var(--yellow)">Key Metric</span>
+        </div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.7">
+          Leq is computed using the energy-averaging formula
+          <code style="background:rgba(255,255,255,.06);padding:2px 6px;border-radius:5px;font-size:12px">10·log₁₀(Σ10^(Lᵢ/10)/N)</code>
+          — the internationally accepted method for noise exposure. Not a simple arithmetic average.
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Threshold presets ──────────────────────────────────────── -->
-<section class="section" style="padding-top: 0;">
-  <div class="wrap">
-    <p class="section-label">Presets</p>
-    <h2 class="section-title">One tap for<br>any environment.</h2>
-    <p class="section-sub">Built-in threshold presets based on real-world SPL guidelines. Or go fully custom.</p>
+<hr class="divider-line">
 
+<!-- ─── PRESETS ───────────────────────────────────────────────────── -->
+<section class="section-sm">
+  <div class="wrap">
+    <p class="section-label">Threshold Presets</p>
+    <h2 class="section-title">One tap for any environment.</h2>
+    <p class="section-body">Built-in presets based on real guidelines. Or dial in fully custom thresholds with the sliders.</p>
     <div class="presets-grid">
-      <div class="preset-card">
+      <div class="preset">
         <div class="preset-icon">👥</div>
         <h4>Conversation</h4>
-        <p style="font-size:13px;color:var(--muted);">Quiet office or home</p>
-        <div class="preset-thresholds">
-          <span class="thresh-badge" style="background:rgba(245,197,66,0.15);color:#f5c542;">W 65</span>
-          <span class="thresh-badge" style="background:rgba(245,147,58,0.15);color:#f5933a;">C 75</span>
-          <span class="thresh-badge" style="background:rgba(240,58,58,0.15);color:#f03a3a;">P 85</span>
+        <p class="preset-desc">Quiet office or home</p>
+        <div class="preset-pills">
+          <span class="pill pill-y">W 65</span>
+          <span class="pill pill-o">C 75</span>
+          <span class="pill pill-r">P 85</span>
         </div>
       </div>
-      <div class="preset-card">
+      <div class="preset">
         <div class="preset-icon">🏛️</div>
         <h4>Classroom</h4>
-        <p style="font-size:13px;color:var(--muted);">Learning environments</p>
-        <div class="preset-thresholds">
-          <span class="thresh-badge" style="background:rgba(245,197,66,0.15);color:#f5c542;">W 70</span>
-          <span class="thresh-badge" style="background:rgba(245,147,58,0.15);color:#f5933a;">C 80</span>
-          <span class="thresh-badge" style="background:rgba(240,58,58,0.15);color:#f03a3a;">P 90</span>
+        <p class="preset-desc">Learning environments</p>
+        <div class="preset-pills">
+          <span class="pill pill-y">W 70</span>
+          <span class="pill pill-o">C 80</span>
+          <span class="pill pill-r">P 90</span>
         </div>
       </div>
-      <div class="preset-card">
+      <div class="preset">
         <div class="preset-icon">🎤</div>
         <h4>Live Event</h4>
-        <p style="font-size:13px;color:var(--muted);">Concerts & venues</p>
-        <div class="preset-thresholds">
-          <span class="thresh-badge" style="background:rgba(245,197,66,0.15);color:#f5c542;">W 85</span>
-          <span class="thresh-badge" style="background:rgba(245,147,58,0.15);color:#f5933a;">C 95</span>
-          <span class="thresh-badge" style="background:rgba(240,58,58,0.15);color:#f03a3a;">P 105</span>
+        <p class="preset-desc">Concerts &amp; venues</p>
+        <div class="preset-pills">
+          <span class="pill pill-y">W 85</span>
+          <span class="pill pill-o">C 95</span>
+          <span class="pill pill-r">P 105</span>
         </div>
       </div>
-      <div class="preset-card">
+      <div class="preset">
         <div class="preset-icon">📻</div>
         <h4>Broadcast</h4>
-        <p style="font-size:13px;color:var(--muted);">Studio & broadcast</p>
-        <div class="preset-thresholds">
-          <span class="thresh-badge" style="background:rgba(245,197,66,0.15);color:#f5c542;">W 80</span>
-          <span class="thresh-badge" style="background:rgba(245,147,58,0.15);color:#f5933a;">C 90</span>
-          <span class="thresh-badge" style="background:rgba(240,58,58,0.15);color:#f03a3a;">P 100</span>
+        <p class="preset-desc">Studio &amp; broadcast</p>
+        <div class="preset-pills">
+          <span class="pill pill-y">W 80</span>
+          <span class="pill pill-o">C 90</span>
+          <span class="pill pill-r">P 100</span>
         </div>
       </div>
-      <div class="preset-card">
+      <div class="preset">
         <div class="preset-icon">⚙️</div>
         <h4>Industrial</h4>
-        <p style="font-size:13px;color:var(--muted);">Heavy machinery</p>
-        <div class="preset-thresholds">
-          <span class="thresh-badge" style="background:rgba(245,197,66,0.15);color:#f5c542;">W 90</span>
-          <span class="thresh-badge" style="background:rgba(245,147,58,0.15);color:#f5933a;">C 100</span>
-          <span class="thresh-badge" style="background:rgba(240,58,58,0.15);color:#f03a3a;">P 110</span>
+        <p class="preset-desc">Heavy machinery</p>
+        <div class="preset-pills">
+          <span class="pill pill-y">W 90</span>
+          <span class="pill pill-o">C 100</span>
+          <span class="pill pill-r">P 110</span>
         </div>
+      </div>
+      <div class="preset" style="border-style:dashed;border-color:rgba(52,210,248,.2)">
+        <div class="preset-icon">🎛️</div>
+        <h4>Custom</h4>
+        <p class="preset-desc">Your own values</p>
+        <div style="font-size:11px;color:var(--cyan)">Set manually with sliders</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Live Link ──────────────────────────────────────────────── -->
-<section class="section" style="padding-top: 0;">
+<hr class="divider-line">
+
+<!-- ─── LIVE LINK ─────────────────────────────────────────────────── -->
+<section class="section" id="livelink">
   <div class="wrap">
     <p class="section-label">Live Link</p>
-    <h2 class="section-title">Your iPhone as<br>an SPL data source.</h2>
-    <p class="section-sub">Stream live readings to dashboards, scripts, or any tool on your local network.</p>
+    <h2 class="section-title">Your iPhone as<br>a data source.</h2>
 
-    <div class="livelink-box">
-      <h3 style="font-size:20px;font-weight:700;margin-bottom:8px;">How it works</h3>
-      <p style="color:var(--muted);font-size:15px;">Enable Live Link in Settings. Any device on the same Wi-Fi can poll your iPhone for a live JSON snapshot:</p>
-      <div class="code-block">{
-  "app": "deciMate",
-  "timestamp": "2026-06-10T22:11:04Z",
-  "spl_current": 87.6,
-  "spl_average": 83.2,
-  "spl_peak": 91.4,
-  "threshold_state": "warning",
-  "companion_state": "Getting loud..."
-}</div>
-      <p style="color:var(--muted);font-size:13px;margin-top:16px;">Works with any HTTP client — browsers, Node.js, Python, Home Assistant, OBS, Shortcuts, and more.</p>
+    <div class="livelink">
+      <div>
+        <h3>Stream live SPL to<br>any tool on your network.</h3>
+        <p style="margin-bottom:16px">
+          Enable Live Link in Settings and any device on the same Wi‑Fi can
+          poll your iPhone for a live JSON snapshot of current readings.
+          No setup, no cloud, no account.
+        </p>
+        <ul style="color:var(--muted);font-size:14px;padding-left:20px;line-height:2">
+          <li>Works with Node.js, Python, Home Assistant, OBS</li>
+          <li>Use in browser dashboards via <code style="color:var(--cyan)">fetch()</code></li>
+          <li>Apple Shortcuts, Zapier, any HTTP client</li>
+          <li>Stops completely when you close the app</li>
+        </ul>
+      </div>
+      <div class="code"><span class="punc">{</span>
+  <span class="key">"app"</span><span class="punc">:</span>             <span class="str">"deciMate"</span><span class="punc">,</span>
+  <span class="key">"timestamp"</span><span class="punc">:</span>       <span class="str">"2026-06-10T22:11:04Z"</span><span class="punc">,</span>
+  <span class="key">"spl_current"</span><span class="punc">:</span>     <span class="num">87.6</span><span class="punc">,</span>
+  <span class="key">"spl_average"</span><span class="punc">:</span>     <span class="num">83.2</span><span class="punc">,</span>
+  <span class="key">"spl_peak"</span><span class="punc">:</span>        <span class="num">91.4</span><span class="punc">,</span>
+  <span class="key">"threshold_state"</span><span class="punc">:</span> <span class="str">"warning"</span><span class="punc">,</span>
+  <span class="key">"companion_state"</span><span class="punc">:</span> <span class="str">"Getting loud..."</span>
+<span class="punc">}</span></div>
     </div>
   </div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────────────────── -->
-<section class="cta-banner">
+<hr class="divider-line">
+
+<!-- ─── CTA ──────────────────────────────────────────────────────── -->
+<section class="cta-section">
   <div class="wrap">
-    <h2>Ready to listen<br>smarter?</h2>
-    <p>Free to download. No account required.</p>
-    <a class="app-store-btn" href="https://apps.apple.com/app/decimate" target="_blank" rel="noopener">
+    <h2>Ready to listen smarter?</h2>
+    <p>Free to download. No account. No cloud. Works right away.</p>
+    <a class="btn-app-store" href="https://apps.apple.com/app/decimate" target="_blank" rel="noopener" style="display:inline-block">
       <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
     </a>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────── -->
-<footer>
-  <div class="inner">
-    <div class="logo">
+<!-- ─── FOOTER ───────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
       <img src="logo.png" alt="deciMate">
       <span>deciMate</span>
     </div>
-    <nav>
+    <nav class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="mailto:info@loudandbeyond.com">Support</a>
-      <a href="https://github.com/MaxdaveMsp/deciMate" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/MaxdaveMsp" target="_blank" rel="noopener">GitHub</a>
     </nav>
-    <p class="footer-copy">© 2026 Loud and Beyond / David Torres. Not a certified SPL meter.</p>
+    <p class="footer-copy">© 2026 Loud and Beyond · David Torres · Not a certified SPL meter.</p>
   </div>
 </footer>
 
