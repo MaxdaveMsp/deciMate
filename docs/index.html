@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>deciMate — Sound Level Monitor for iPhone</title>
-  <meta name="description" content="deciMate turns your iPhone into a practical SPL monitor. Live dB readings, OSHA/NIOSH noise exposure reports, smart threshold alerts, and a friendly mascot that reacts to your sound levels.">
-  <meta property="og:title" content="deciMate — Sound Level Monitor">
+  <title>DeciMate SPL — Sound Level Monitor for iPhone</title>
+  <meta name="description" content="DeciMate SPL turns your iPhone into a practical SPL monitor. Live dB readings, OSHA/NIOSH noise exposure reports, smart threshold alerts, and a friendly mascot that reacts to your sound levels.">
+  <meta property="og:title" content="DeciMate SPL — Sound Level Monitor">
   <meta property="og:description" content="Live SPL monitoring, noise exposure reports, smart alerts, and a friendly mascot for rehearsals, DJ sets, and live events.">
   <meta property="og:image" content="logo.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -458,14 +458,14 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="#">
-      <img src="logo.png" alt="deciMate">
-      <span>deciMate</span>
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
     </a>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#mascot">Mascot</a></li>
       <li><a href="#exposure">Reports</a></li>
-      <li><a href="#livelink">Live Link</a></li>
+      <li><a href="live-link.html">Live Link</a></li>
       <li><a href="privacy.html">Privacy</a></li>
     </ul>
     <a class="nav-cta" href="#download">
@@ -485,7 +485,7 @@
     </div>
     <h1>Your iPhone.<br><span class="grad">Your sound meter.</span></h1>
     <p class="hero-sub">
-      deciMate turns your iPhone into a practical SPL monitor with live dB readings,
+      DeciMate SPL turns your iPhone into a practical SPL monitor with live dB readings,
       OSHA &amp; NIOSH noise exposure reports, smart threshold alerts, and a
       friendly mascot that reacts to every level change.
     </p>
@@ -560,8 +560,8 @@
       </div>
       <div class="feat">
         <div class="feat-icon">🔗</div>
-        <h3>deciMate Live Link</h3>
-        <p>Optional local-network HTTP server streams a live JSON snapshot of current SPL, average, peak, and state. Poll from any dashboard, script, or HTTP tool on the same Wi-Fi.</p>
+        <h3>DeciMate SPL Live Link</h3>
+        <p>Optional local-network JSON and OSC streaming for dashboards, laptops, show-control rigs, and bridge workflows on the same Wi-Fi.</p>
       </div>
       <div class="feat">
         <div class="feat-icon">🔒</div>
@@ -582,10 +582,10 @@
         <p class="section-label">The Mascot</p>
         <h2 class="section-title">Reads the room<br>at a glance.</h2>
         <p class="section-body">
-          deciMate's mascot isn't decoration — it's a fast visual signal you can
+          DeciMate SPL's mascot isn't decoration — it's a fast visual signal you can
           read from across a venue without squinting at numbers.
           Four distinct expressions, physics-based animations, and a
-          waveform mouth that's uniquely deciMate.
+          waveform mouth that's uniquely DeciMate SPL.
         </p>
 
         <div class="states-grid">
@@ -804,22 +804,28 @@
         <h3>Stream live SPL to<br>any tool on your network.</h3>
         <p style="margin-bottom:16px">
           Enable Live Link in Settings and any device on the same Wi‑Fi can
-          poll your iPhone for a live JSON snapshot of current readings.
+          poll your iPhone for JSON or receive OSC messages from current readings.
           No setup, no cloud, no account.
         </p>
         <ul style="color:var(--muted);font-size:14px;padding-left:20px;line-height:2">
-          <li>Works with Node.js, Python, Home Assistant, OBS</li>
-          <li>Use in browser dashboards via <code style="color:var(--cyan)">fetch()</code></li>
-          <li>Apple Shortcuts, Zapier, any HTTP client</li>
+          <li>Use <code style="color:var(--cyan)">/status</code> for JSON polling</li>
+          <li>Use <code style="color:var(--cyan)">/stream</code> for continuous browser updates</li>
+          <li>Send OSC to Max/MSP, TouchDesigner, Q-SYS, OBS, or custom tools</li>
           <li>Stops completely when you close the app</li>
         </ul>
+        <a class="btn-ghost" href="live-link.html" style="margin-top:22px">
+          Connection guide
+        </a>
       </div>
       <div class="code"><span class="punc">{</span>
-  <span class="key">"app"</span><span class="punc">:</span>             <span class="str">"deciMate"</span><span class="punc">,</span>
+  <span class="key">"app"</span><span class="punc">:</span>             <span class="str">"DeciMate SPL"</span><span class="punc">,</span>
   <span class="key">"timestamp"</span><span class="punc">:</span>       <span class="str">"2026-06-10T22:11:04Z"</span><span class="punc">,</span>
   <span class="key">"spl_current"</span><span class="punc">:</span>     <span class="num">87.6</span><span class="punc">,</span>
   <span class="key">"spl_average"</span><span class="punc">:</span>     <span class="num">83.2</span><span class="punc">,</span>
   <span class="key">"spl_peak"</span><span class="punc">:</span>        <span class="num">91.4</span><span class="punc">,</span>
+  <span class="key">"leq_1_minute"</span><span class="punc">:</span>    <span class="num">84.8</span><span class="punc">,</span>
+  <span class="key">"leq_10_minutes"</span><span class="punc">:</span>  <span class="num">82.9</span><span class="punc">,</span>
+  <span class="key">"measurement_mode"</span><span class="punc">:</span> <span class="str">"SPL A Fast"</span><span class="punc">,</span>
   <span class="key">"threshold_state"</span><span class="punc">:</span> <span class="str">"warning"</span><span class="punc">,</span>
   <span class="key">"companion_state"</span><span class="punc">:</span> <span class="str">"Getting loud..."</span>
 <span class="punc">}</span></div>
@@ -844,13 +850,14 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="logo.png" alt="deciMate">
-      <span>deciMate</span>
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
     </div>
     <nav class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
+      <a href="live-link.html">Live Link Guide</a>
       <a href="mailto:info@loudandbeyond.com">Support</a>
-      <a href="https://github.com/MaxdaveMsp" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/MaxdaveMsp/deciMate" target="_blank" rel="noopener">GitHub</a>
     </nav>
     <p class="footer-copy">© 2026 Loud and Beyond · David Torres · Not a certified SPL meter.</p>
   </div>

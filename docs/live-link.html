@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Link Guide - DeciMate SPL</title>
+  <meta name="description" content="Connect DeciMate SPL Live Link Pro to browser dashboards, local JSON tools, and OSC receivers on your local network.">
+  <meta property="og:title" content="DeciMate SPL Live Link Guide">
+  <meta property="og:description" content="Use JSON, live browser streams, and OSC to bring DeciMate SPL readings into your local dashboards and show-control tools.">
+  <meta property="og:image" content="logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07090f;
+      --bg2:       #0c1018;
+      --card:      #10151f;
+      --card2:     #141920;
+      --border:    rgba(255,255,255,0.07);
+      --border2:   rgba(255,255,255,0.04);
+      --cyan:      #34d2f8;
+      --blue:      #2472e8;
+      --text:      #e8eeff;
+      --muted:     #6b7a96;
+      --muted2:    #4a5568;
+      --green:     #34d999;
+      --yellow:    #f5c842;
+      --orange:    #f59332;
+      --red:       #f04040;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    code { font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap-sm { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(7,9,15,0.88);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; height: 60px; gap: 32px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 17px; letter-spacing: -.3px;
+      flex-shrink: 0;
+    }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 8px; }
+    .nav-links { display: flex; gap: 24px; list-style: none; margin-left: auto; }
+    .nav-links a { font-size: 14px; color: var(--muted); transition: color .18s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      margin-left: 8px;
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--cyan); color: #060b14;
+      font-weight: 700; font-size: 13px;
+      padding: 8px 16px; border-radius: 99px;
+      transition: opacity .18s, transform .18s;
+      flex-shrink: 0;
+    }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
+
+    .hero {
+      position: relative;
+      padding: 96px 0 76px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: -220px -20% auto;
+      height: 640px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(52,210,248,.11), transparent 68%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 54px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(52,210,248,.08);
+      border: 1px solid rgba(52,210,248,.2);
+      color: var(--cyan);
+      font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 99px; margin-bottom: 24px;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px rgba(52,210,248,.9); }
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      font-weight: 850;
+      letter-spacing: -2.5px;
+      line-height: .98;
+      margin-bottom: 22px;
+    }
+    .grad {
+      background: linear-gradient(135deg, var(--cyan) 16%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 34px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn-primary,
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 46px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      transition: transform .18s, border-color .18s, background .18s;
+    }
+    .btn-primary {
+      padding: 12px 20px;
+      background: var(--cyan);
+      color: #06101a;
+    }
+    .btn-ghost {
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-primary:hover,
+    .btn-ghost:hover { transform: translateY(-2px); }
+    .btn-ghost:hover { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.15); }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(20,25,32,.88), rgba(10,14,22,.92));
+      border: 1px solid rgba(52,210,248,.16);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 38px 110px rgba(0,0,0,.55);
+    }
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: .72fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .phone-shot {
+      background: #141922;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 28px;
+      overflow: hidden;
+      align-self: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+    .signal-panel {
+      min-height: 100%;
+      background: rgba(0,0,0,.34);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+      gap: 16px;
+    }
+    .meter-readout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .readout {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .readout span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .readout strong {
+      display: block;
+      font-size: 25px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .endpoint-card {
+      background: rgba(52,210,248,.07);
+      border: 1px solid rgba(52,210,248,.18);
+      border-radius: 16px;
+      padding: 14px;
+      color: #b9eefe;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+    .endpoint-card strong { display: block; color: var(--cyan); font-size: 11px; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+
+    .section { padding: 92px 0; }
+    .section-sm { padding: 64px 0; }
+    .divider-line { border: 0; border-top: 1px solid var(--border2); }
+    .section-label {
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 850;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+    .section-body {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 46px;
+    }
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+    .step-number {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(52,210,248,.1);
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .step-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .step-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 42px;
+      align-items: center;
+    }
+    .screenshot-frame {
+      background: linear-gradient(180deg, rgba(20,25,32,.88), rgba(11,15,23,.92));
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.45);
+    }
+    .screenshot-frame img {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hint-list { display: grid; gap: 12px; margin-top: 24px; }
+    .hint {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .hint-mark {
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(52,210,248,.12);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .hint strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .hint span { display: block; font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 46px;
+    }
+    .workflow-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .workflow-card-header {
+      padding: 24px 24px 0;
+    }
+    .workflow-card h3 { font-size: 20px; letter-spacing: -.4px; margin-bottom: 8px; }
+    .workflow-card p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .dashboard-preview {
+      margin: 22px 16px 16px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(52,210,248,.18), transparent 32%),
+        #0d111b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 310px;
+    }
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      margin-bottom: 16px;
+    }
+    .browser-bar i {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+    }
+    .url-pill {
+      margin-left: 8px;
+      flex: 1;
+      background: rgba(255,255,255,.06);
+      border-radius: 99px;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 5px 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .mock-dashboard-head {
+      background: #171d2b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .mock-dashboard-head strong { display: block; font-size: 18px; margin-bottom: 4px; }
+    .mock-dashboard-head span { color: var(--muted); font-size: 12px; }
+    .mock-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .mock-metric {
+      background: #171d2b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 94px;
+    }
+    .mock-metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .mock-metric strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .mock-state {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #171d2b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .badge {
+      border-radius: 99px;
+      padding: 7px 10px;
+      background: rgba(52,217,153,.14);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .osc-preview {
+      margin: 22px 16px 16px;
+      background: #090d14;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 310px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      color: #b8c7df;
+      font-size: 12px;
+      line-height: 1.9;
+      overflow: hidden;
+    }
+    .osc-preview .terminal-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--cyan);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .osc-line { white-space: nowrap; }
+    .osc-address { color: #a8d8f0; }
+    .osc-value { color: #a8f0d4; }
+    .osc-hot { color: #f0c8a8; }
+
+    .code {
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 22px 24px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .code .key { color: #a8d8f0; }
+    .code .num { color: #f0c8a8; }
+    .code .str { color: #f0a8c8; }
+    .code .punc { color: var(--muted2); }
+
+    .endpoint-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 46px;
+    }
+    .endpoint {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .endpoint strong { display: block; font-size: 15px; margin-bottom: 8px; color: var(--text); }
+    .endpoint code {
+      display: inline-block;
+      color: var(--cyan);
+      background: rgba(52,210,248,.08);
+      border: 1px solid rgba(52,210,248,.16);
+      border-radius: 8px;
+      padding: 4px 7px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .endpoint p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    .callout {
+      margin-top: 42px;
+      background: linear-gradient(135deg, rgba(52,210,248,.08), rgba(36,114,232,.06));
+      border: 1px solid rgba(52,210,248,.18);
+      border-radius: 24px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+    .callout h3 { font-size: 21px; margin-bottom: 6px; }
+    .callout p { color: var(--muted); font-size: 14px; }
+
+    .footer {
+      border-top: 1px solid var(--border2);
+      padding: 36px 0;
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; flex-wrap: wrap; gap: 20px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-brand img { width: 26px; border-radius: 7px; }
+    .footer-brand span { font-size: 14px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color .15s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 12px; color: var(--muted2); }
+
+    @media (max-width: 880px) {
+      .hero-grid,
+      .split,
+      .callout { grid-template-columns: 1fr; }
+      .steps-grid,
+      .endpoint-grid { grid-template-columns: repeat(2, 1fr); }
+      .cards-grid { grid-template-columns: 1fr; }
+      .hero-card-grid { grid-template-columns: 1fr; }
+      .phone-shot { max-width: 280px; margin: 0 auto; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 560px) {
+      .hero { padding-top: 70px; }
+      .steps-grid,
+      .endpoint-grid,
+      .mock-metrics { grid-template-columns: 1fr; }
+      .hero-card,
+      .callout { padding: 18px; }
+      .dashboard-preview,
+      .osc-preview { min-height: auto; }
+      h1 { letter-spacing: -1.5px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#exposure">Reports</a></li>
+      <li><a href="live-link.html">Live Link</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <a class="nav-cta" href="index.html#download">App Store</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Live Link Pro</div>
+          <h1>Connect DeciMate SPL to your <span class="grad">local dashboard.</span></h1>
+          <p class="hero-sub">
+            Live Link turns the iPhone into a local SPL data source. Use JSON for browser dashboards and scripts, or send OSC to creative and show-control tools on the same network.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#quick-start">Quick start</a>
+            <a class="btn-ghost" href="#osc">OSC setup</a>
+          </div>
+        </div>
+
+        <div class="hero-card" aria-label="Live Link connection preview">
+          <div class="hero-card-grid">
+            <div class="phone-shot">
+              <img src="screenshots/pro_05_settings.png" alt="DeciMate SPL settings screen">
+            </div>
+            <div class="signal-panel">
+              <div class="meter-readout">
+                <div class="readout"><span>Current</span><strong>87.6</strong></div>
+                <div class="readout"><span>Leq 1m</span><strong>84.8</strong></div>
+                <div class="readout"><span>Peak</span><strong>91.4</strong></div>
+                <div class="readout"><span>Mode</span><strong>A Fast</strong></div>
+              </div>
+              <div class="endpoint-card">
+                <strong>Use the phone IP first</strong>
+                http://192.168.1.42:8080/status<br>
+                http://192.168.1.42:8080/stream
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section" id="quick-start">
+    <div class="wrap">
+      <p class="section-label">Quick Start</p>
+      <h2 class="section-title">Four steps from phone<br>to dashboard.</h2>
+      <p class="section-body">
+        Live Link is local and opt-in. The iPhone and computer need to be on the same Wi-Fi network, and DeciMate SPL should stay open while you are streaming.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Same Wi-Fi</h3>
+          <p>Put the iPhone and your dashboard computer on the same local network before starting Live Link.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Start monitoring</h3>
+          <p>Open DeciMate SPL and start a session so the app is producing live SPL and exposure values.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Start Live Link</h3>
+          <p>In Settings, tap Start Live Link. Allow the iOS Local Network prompt when it appears.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Use the shown URL</h3>
+          <p>Open the numeric IP address shown by DeciMate SPL. It is more reliable than relying on iphone.local.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="section-label">In The App</p>
+          <h2 class="section-title">Settings gives you the addresses.</h2>
+          <p class="section-body">
+            Once Live Link is running, DeciMate SPL lists the URLs to try from your computer. Use the numeric IP address first. Keep the app awake and in the foreground for the most stable stream.
+          </p>
+          <div class="hint-list">
+            <div class="hint">
+              <div class="hint-mark">i</div>
+              <div>
+                <strong>Copy the numeric address</strong>
+                <span>Use something like <code>192.168.1.42</code>. Local names such as <code>iphone.local</code> depend on the router and can fail.</span>
+              </div>
+            </div>
+            <div class="hint">
+              <div class="hint-mark">i</div>
+              <div>
+                <strong>Start local network permission once</strong>
+                <span>iOS asks the first time Live Link starts. If it was denied, enable it again in iOS Settings.</span>
+              </div>
+            </div>
+            <div class="hint">
+              <div class="hint-mark">i</div>
+              <div>
+                <strong>Use trusted networks</strong>
+                <span>Live Link is designed for your own LAN during rehearsals, events, and testing. Do not enable it on networks you do not trust.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screenshot-frame">
+          <img src="screenshots/pro_05_settings.png" alt="Settings screen where Live Link is started">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section" id="json">
+    <div class="wrap">
+      <p class="section-label">JSON Dashboards</p>
+      <h2 class="section-title">Browser-friendly data,<br>ready for tools.</h2>
+      <p class="section-body">
+        Use JSON when you want a webpage, script, logger, or automation tool to read DeciMate SPL. The included examples can run directly from the repo.
+      </p>
+
+      <div class="cards-grid">
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Simple dashboard</h3>
+            <p>Best first test. It polls <code>/status</code> and shows current SPL, average, peak, Leq 1m, Leq 10m, and state.</p>
+          </div>
+          <div class="dashboard-preview">
+            <div class="browser-bar"><i></i><i></i><i></i><div class="url-pill">http://192.168.1.42:8080/status</div></div>
+            <div class="mock-dashboard-head">
+              <strong>DeciMate SPL Live Link</strong>
+              <span>Simple local dashboard polling the iPhone JSON endpoint.</span>
+            </div>
+            <div class="mock-metrics">
+              <div class="mock-metric"><span>Current</span><strong>87.6</strong></div>
+              <div class="mock-metric"><span>Average</span><strong>83.2</strong></div>
+              <div class="mock-metric"><span>Peak</span><strong>91.4</strong></div>
+            </div>
+            <div class="mock-state"><span>SPL A Fast · Getting loud...</span><span class="badge">WARNING</span></div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Animated dashboard</h3>
+            <p>Built for demos and live monitoring. It mirrors the DeciMate SPL feel with state colors, meter motion, and companion-style feedback.</p>
+          </div>
+          <div class="screenshot-frame" style="margin:22px 16px 16px">
+            <img src="screenshots/pro_02_focused.png" alt="DeciMate SPL focused monitoring state">
+          </div>
+        </article>
+      </div>
+
+      <div class="endpoint-grid">
+        <div class="endpoint">
+          <strong>Snapshot endpoint</strong>
+          <code>/status</code>
+          <p>Use this for polling once per second from fetch, Node.js, Python, Shortcuts, or any HTTP client.</p>
+        </div>
+        <div class="endpoint">
+          <strong>Live endpoint</strong>
+          <code>/stream</code>
+          <p>Use this for continuous browser updates with server-sent events. It sends a JSON snapshot every 0.5 seconds.</p>
+        </div>
+        <div class="endpoint">
+          <strong>Example files</strong>
+          <code>examples/live-link</code>
+          <p>Includes a simple dashboard, animated dashboard, Node logger, and OSC receiver for local testing.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div>
+          <h3>Small connection hint</h3>
+          <p>If the dashboard cannot connect, stop and restart Live Link, then paste the fresh numeric URL shown by the app.</p>
+        </div>
+        <a class="btn-ghost" href="https://github.com/MaxdaveMsp/deciMate/tree/main/examples" target="_blank" rel="noopener">Examples README</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section" id="osc">
+    <div class="wrap">
+      <p class="section-label">OSC Stream</p>
+      <h2 class="section-title">Send SPL into creative<br>and show-control tools.</h2>
+      <p class="section-body">
+        Turn on Stream OSC when you want DeciMate SPL to push readings out over UDP. Set the OSC host to your computer IP for the most reliable connection.
+      </p>
+
+      <div class="cards-grid">
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>OSC receiver</h3>
+            <p>The example receiver listens on UDP port 9000 and prints incoming DeciMate SPL OSC messages in Terminal.</p>
+          </div>
+          <div class="osc-preview">
+            <div class="terminal-title"><span class="dot"></span> Listening on UDP 9000</div>
+            <div class="osc-line"><span class="osc-address">/decimate/spl/current</span> <span class="osc-value">87.6</span></div>
+            <div class="osc-line"><span class="osc-address">/decimate/spl/average</span> <span class="osc-value">83.2</span></div>
+            <div class="osc-line"><span class="osc-address">/decimate/spl/peak</span> <span class="osc-hot">91.4</span></div>
+            <div class="osc-line"><span class="osc-address">/decimate/spl/leq1m</span> <span class="osc-value">84.8</span></div>
+            <div class="osc-line"><span class="osc-address">/decimate/mode/measurement</span> <span class="osc-value">SPL A Fast</span></div>
+            <div class="osc-line"><span class="osc-address">/decimate/state/threshold</span> <span class="osc-hot">warning</span></div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Recommended settings</h3>
+            <p>Broadcast can work on simple networks, but direct IP is better for venues and rehearsal rooms.</p>
+          </div>
+          <div class="osc-preview">
+            <div class="terminal-title"><span class="dot"></span> DeciMate SPL Settings</div>
+            <div class="osc-line"><span class="osc-address">Stream OSC</span> <span class="osc-value">On</span></div>
+            <div class="osc-line"><span class="osc-address">OSC host</span> <span class="osc-value">192.168.1.20</span></div>
+            <div class="osc-line"><span class="osc-address">OSC port</span> <span class="osc-value">9000</span></div>
+            <br>
+            <div class="osc-line"><span class="osc-hot">Hint:</span> use your laptop IP, not the phone IP.</div>
+            <div class="osc-line"><span class="osc-hot">Hint:</span> keep your OSC app listening before enabling the stream.</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="callout">
+        <div>
+          <h3>Test OSC from Terminal</h3>
+          <p>Run <code>node examples/live-link/osc-receiver/live-link-osc-receiver.mjs</code>, then set DeciMate SPL OSC host to this computer's IP and port to <code>9000</code>.</p>
+        </div>
+        <a class="btn-primary" href="#quick-start">Back to setup</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section-sm">
+    <div class="wrap">
+      <p class="section-label">Payload</p>
+      <h2 class="section-title">What the JSON looks like.</h2>
+      <p class="section-body" style="margin-bottom:32px">
+        The HTTP endpoints return a practical monitoring snapshot: live SPL, exposure fields, selected mode, threshold state, and companion state.
+      </p>
+      <div class="code"><span class="punc">{</span>
+  <span class="key">"app"</span><span class="punc">:</span> <span class="str">"DeciMate SPL"</span><span class="punc">,</span>
+  <span class="key">"timestamp"</span><span class="punc">:</span> <span class="str">"2026-06-12T20:15:30Z"</span><span class="punc">,</span>
+  <span class="key">"spl_current"</span><span class="punc">:</span> <span class="num">84.2</span><span class="punc">,</span>
+  <span class="key">"spl_average"</span><span class="punc">:</span> <span class="num">81.7</span><span class="punc">,</span>
+  <span class="key">"spl_peak"</span><span class="punc">:</span> <span class="num">96.4</span><span class="punc">,</span>
+  <span class="key">"spl_leq"</span><span class="punc">:</span> <span class="num">83.6</span><span class="punc">,</span>
+  <span class="key">"leq_1_minute"</span><span class="punc">:</span> <span class="num">84.8</span><span class="punc">,</span>
+  <span class="key">"leq_10_minutes"</span><span class="punc">:</span> <span class="num">82.9</span><span class="punc">,</span>
+  <span class="key">"osha_dose_percent"</span><span class="punc">:</span> <span class="num">3.2</span><span class="punc">,</span>
+  <span class="key">"niosh_dose_percent"</span><span class="punc">:</span> <span class="num">8.7</span><span class="punc">,</span>
+  <span class="key">"eu_lex8h"</span><span class="punc">:</span> <span class="num">61.4</span><span class="punc">,</span>
+  <span class="key">"weighting"</span><span class="punc">:</span> <span class="str">"A"</span><span class="punc">,</span>
+  <span class="key">"response"</span><span class="punc">:</span> <span class="str">"Fast"</span><span class="punc">,</span>
+  <span class="key">"measurement_mode"</span><span class="punc">:</span> <span class="str">"SPL A Fast"</span><span class="punc">,</span>
+  <span class="key">"threshold_state"</span><span class="punc">:</span> <span class="str">"safe"</span><span class="punc">,</span>
+  <span class="key">"companion_state"</span><span class="punc">:</span> <span class="str">"All good!"</span>
+<span class="punc">}</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
+    </div>
+    <nav class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="mailto:info@loudandbeyond.com">Support</a>
+      <a href="https://github.com/MaxdaveMsp/deciMate" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <p class="footer-copy">© 2026 Loud and Beyond · David Torres · Not a certified SPL meter.</p>
+  </div>
+</footer>
+
+</body>
+</html>

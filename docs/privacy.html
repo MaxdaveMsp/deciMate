@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy Policy — deciMate</title>
-  <meta name="description" content="deciMate privacy policy. No tracking, no accounts, no cloud. Audio is never recorded or transmitted.">
+  <title>Privacy Policy — DeciMate SPL</title>
+  <meta name="description" content="DeciMate SPL privacy policy. No tracking, no accounts, no cloud. Audio is never recorded or transmitted.">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -162,8 +162,8 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">
-      <img src="logo.png" alt="deciMate">
-      deciMate
+      <img src="logo.png" alt="DeciMate SPL">
+      DeciMate SPL
     </a>
     <a class="nav-back" href="index.html">
       ← Back to site
@@ -176,7 +176,7 @@
 
   <div class="page-header">
     <h1>Privacy Policy</h1>
-    <p class="meta">Last updated: June 2026 · Applies to deciMate for iOS</p>
+    <p class="meta">Last updated: June 2026 · Applies to DeciMate SPL for iOS</p>
   </div>
 
   <!-- Quick summary -->
@@ -215,7 +215,7 @@
   <div class="policy-section">
     <h2>1. Who we are</h2>
     <p>
-      deciMate is developed by <strong>David Torres / Loud and Beyond</strong>.
+      DeciMate SPL is developed by <strong>David Torres / Loud and Beyond</strong>.
       This privacy policy explains what data the app accesses, how it is handled,
       and what — if anything — ever leaves your device.
     </p>
@@ -226,7 +226,7 @@
   <div class="policy-section">
     <h2>2. Microphone access</h2>
     <div class="highlight">
-      deciMate requests access to your device microphone solely to measure sound pressure levels.
+      DeciMate SPL requests access to your device microphone solely to measure sound pressure levels.
       <strong>No audio is ever recorded, stored, or transmitted.</strong>
     </div>
     <p>
@@ -261,7 +261,7 @@
       Tapping <strong>Export</strong> generates a noise exposure report on your device.
       The file is presented via the standard iOS share sheet — you control
       exactly where it goes (Files, Mail, AirDrop, etc.).
-      deciMate does not receive, store, or transmit a copy of the exported file.
+      DeciMate SPL does not receive, store, or transmit a copy of the exported file.
     </p>
     <p>
       The exported report includes: session timestamps, SPL samples, peak readings,
@@ -272,16 +272,18 @@
 
   <!-- 5 -->
   <div class="policy-section">
-    <h2>5. deciMate Live Link (optional feature)</h2>
+    <h2>5. DeciMate SPL Live Link (optional feature)</h2>
     <p>
       Live Link is an <strong>opt-in</strong> feature that you must explicitly start by tapping
-      <em>"Start Live Link"</em> in Settings. When active, it opens a local HTTP server
-      on port 8080 that responds with a live JSON snapshot of the current SPL reading.
+      <em>"Start Live Link"</em> in Settings. When active, it can open a local HTTP server
+      on port 8080 for JSON status and live stream endpoints, and can optionally send
+      OSC messages to a host and port you configure.
     </p>
     <ul>
       <li>Only runs when you actively start it — it is completely off by default</li>
       <li>Only accessible to devices on the same local Wi-Fi network</li>
       <li>Not accessible over the internet</li>
+      <li>OSC is only sent when you turn on Stream OSC and choose a destination</li>
       <li>Does not log, store, or forward any requests or data</li>
       <li>Stops completely when you tap "Stop Live Link" or close the app</li>
     </ul>
@@ -295,7 +297,7 @@
   <div class="policy-section">
     <h2>6. Analytics and tracking</h2>
     <p>
-      deciMate contains <strong>no analytics framework, no advertising SDK,
+      DeciMate SPL contains <strong>no analytics framework, no advertising SDK,
       and no tracking code</strong> of any kind. We do not collect:
     </p>
     <ul>
@@ -311,14 +313,14 @@
   <div class="policy-section">
     <h2>7. Third-party services and SDKs</h2>
     <p>
-      deciMate uses <strong>no third-party libraries, SDKs, or APIs</strong>.
+      DeciMate SPL uses <strong>no third-party libraries, SDKs, or APIs</strong>.
       The entire app is built using Apple's own frameworks:
     </p>
     <ul>
       <li>SwiftUI — user interface</li>
       <li>AVFoundation — microphone access and audio processing</li>
       <li>Combine — reactive data flow</li>
-      <li>Network (NWListener) — Live Link local HTTP server</li>
+      <li>Network framework — Live Link local HTTP server and optional OSC UDP output</li>
       <li>Charts — session history graph</li>
       <li>UniformTypeIdentifiers — file export</li>
     </ul>
@@ -328,7 +330,7 @@
   <div class="policy-section">
     <h2>8. Children's privacy</h2>
     <p>
-      deciMate does not knowingly collect any information from children under 13.
+      DeciMate SPL does not knowingly collect any information from children under 13.
       The app contains no advertising, in-app purchases targeting children,
       or any features designed to collect data from minors.
     </p>
@@ -371,8 +373,8 @@
 
   <div class="page-footer">
     <span>© 2026 Loud and Beyond / David Torres</span>
-    <a href="index.html">← Back to deciMate</a>
-    <span>deciMate is not a certified Class 1/Class 2 sound level meter.</span>
+    <a href="index.html">← Back to DeciMate SPL</a>
+    <span>DeciMate SPL is not a certified Class 1/Class 2 sound level meter.</span>
   </div>
 
 </main>

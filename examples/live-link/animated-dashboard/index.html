@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeciMate SPL Live Link Animated Dashboard</title>
+  <style>
+    :root {
+      --bg: #0d111b;
+      --panel: #171d2b;
+      --ink: #f5f7fb;
+      --muted: rgba(245, 247, 251, 0.62);
+      --cyan: #33d1fa;
+      --accent: #4ade80;
+      --body: #24293d;
+      color-scheme: dark;
+      font-family: ui-rounded, "SF Pro Rounded", Inter, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(51, 209, 250, 0.16), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0;
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 16px;
+      min-height: 100vh;
+      align-content: center;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 42%, #f5f7fb 0 12%, transparent 13%),
+        linear-gradient(135deg, var(--cyan), #2b80f2);
+      box-shadow: 0 0 22px rgba(51, 209, 250, 0.42);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    input,
+    button {
+      min-height: 42px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    input {
+      min-width: 0;
+      background: #0d111b;
+      color: var(--ink);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      background: var(--cyan);
+      color: #071019;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #222a3d;
+      color: var(--ink);
+    }
+
+    .companion-card {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      inset: 18px;
+      background: radial-gradient(circle at center, color-mix(in srgb, var(--accent), transparent 76%), transparent 58%);
+      filter: blur(16px);
+      pointer-events: none;
+    }
+
+    .ground {
+      width: 90px;
+      height: 12px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent), transparent 78%);
+      filter: blur(10px);
+      animation: ground 1.8s ease-in-out infinite alternate;
+    }
+
+    .mascot-wrap {
+      width: 160px;
+      height: 160px;
+      display: grid;
+      place-items: center;
+      animation: float 1.8s ease-in-out infinite alternate;
+    }
+
+    .mascot {
+      position: relative;
+      width: 118px;
+      height: 122px;
+    }
+
+    .ear {
+      position: absolute;
+      top: 54px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .ear.left { left: -19px; }
+    .ear.right { right: -19px; transform: scaleX(-1); }
+
+    .ear span,
+    .bars span {
+      display: block;
+      width: 4px;
+      border-radius: 999px;
+      background: rgba(245, 247, 251, 0.24);
+      transform-origin: center;
+      animation: bar 1s ease-in-out infinite alternate;
+    }
+
+    .ear span:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .ear span:nth-child(2) { height: 20px; animation-delay: .08s; }
+    .ear span:nth-child(3) { height: 28px; animation-delay: .16s; }
+
+    .body {
+      position: absolute;
+      inset: 8px 16px 0;
+      border-radius: 999px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--body), white 5%), var(--body));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 28px 36px rgba(255, 255, 255, 0.07);
+    }
+
+    .dot {
+      position: absolute;
+      left: 50%;
+      top: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent);
+    }
+
+    .dot::before {
+      content: "";
+      position: absolute;
+      inset: -7px;
+      border-radius: inherit;
+      background: color-mix(in srgb, var(--accent), transparent 66%);
+      filter: blur(5px);
+      animation: pulse 1.1s ease-in-out infinite alternate;
+    }
+
+    .face {
+      position: absolute;
+      left: 50%;
+      top: 52px;
+      width: 72px;
+      height: 58px;
+      transform: translateX(-50%);
+    }
+
+    .eye {
+      position: absolute;
+      top: 4px;
+      width: 20px;
+      height: 16px;
+      border-radius: 10px;
+      background: #fff;
+      animation: blink 4.5s infinite;
+    }
+
+    .eye.left { left: 6px; }
+    .eye.right { right: 6px; }
+
+    .mouth {
+      position: absolute;
+      left: 50%;
+      top: 34px;
+      width: 28px;
+      height: 12px;
+      transform: translateX(-50%);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.84);
+      border-radius: 0 0 20px 20px;
+    }
+
+    .message {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .message strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .bars {
+      display: flex;
+      gap: 5px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bars span {
+      width: 5px;
+      background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent), transparent 76%));
+    }
+
+    .bars span:nth-child(1) { height: 14px; animation-delay: 0s; }
+    .bars span:nth-child(2) { height: 24px; animation-delay: .05s; }
+    .bars span:nth-child(3) { height: 18px; animation-delay: .1s; }
+    .bars span:nth-child(4) { height: 30px; animation-delay: .15s; }
+    .bars span:nth-child(5) { height: 34px; animation-delay: .2s; }
+    .bars span:nth-child(6) { height: 28px; animation-delay: .25s; }
+    .bars span:nth-child(7) { height: 18px; animation-delay: .3s; }
+
+    .meter-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .dial {
+      width: 220px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, #171d2b 0 52%, transparent 53%),
+        conic-gradient(from 210deg, var(--accent) calc(var(--progress) * 300deg), rgba(255, 255, 255, 0.08) 0 300deg, transparent 0);
+      filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent), transparent 60%));
+    }
+
+    .dial-inner {
+      width: 156px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #0d111b;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .spl {
+      font-size: clamp(58px, 11vw, 116px);
+      font-weight: 1000;
+      line-height: .88;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .unit {
+      color: var(--accent);
+      font-weight: 900;
+      margin-top: 8px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      background: #0d111b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 30px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    canvas {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      background: #0d111b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    body.warning { --accent: #facc15; --body: #2e2712; }
+    body.critical { --accent: #fb923c; --body: #332012; }
+    body.peak { --accent: #f87171; --body: #321717; }
+    body.peak .mascot-wrap { animation: float .35s ease-in-out infinite alternate, shake .22s linear infinite; }
+    body.peak .eye { border-radius: 0; transform: rotate(45deg); }
+    body.peak .eye::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      transform: rotate(90deg);
+    }
+    body.warning .mouth {
+      top: 40px;
+      border-bottom: 0;
+      border-top: 3px solid rgba(255, 255, 255, 0.78);
+      border-radius: 20px 20px 0 0;
+    }
+    body.critical .mouth,
+    body.peak .mouth {
+      top: 32px;
+      width: 22px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.84);
+      border-radius: 50%;
+    }
+
+    @keyframes float {
+      from { transform: translateY(4px); }
+      to { transform: translateY(-8px); }
+    }
+
+    @keyframes ground {
+      from { transform: scaleX(1); opacity: .9; }
+      to { transform: scaleX(.78); opacity: .52; }
+    }
+
+    @keyframes pulse {
+      from { opacity: .42; transform: scale(.8); }
+      to { opacity: .9; transform: scale(1.2); }
+    }
+
+    @keyframes bar {
+      from { transform: scaleY(.48); }
+      to { transform: scaleY(var(--bar-scale, 1)); }
+    }
+
+    @keyframes blink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      94%, 96% { transform: scaleY(.18); }
+    }
+
+    @keyframes shake {
+      0%, 100% { translate: 0 0; }
+      25% { translate: 5px 0; }
+      75% { translate: -5px 0; }
+    }
+
+    @media (max-width: 880px) {
+      main { grid-template-columns: 1fr; align-content: start; }
+      .hero { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    @media (max-width: 560px) {
+      .metrics { grid-template-columns: 1fr; }
+      .dial { width: min(220px, 78vw); }
+    }
+  </style>
+</head>
+<body class="safe" style="--progress: .48; --bar-scale: .8;">
+  <main>
+    <aside class="panel">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>DeciMate SPL Live Link</h1>
+          <p class="small">Animated dashboard</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <input id="endpoint" value="http://iphone.local:8080/status" aria-label="Live Link endpoint">
+        <div class="buttons">
+          <button id="connect">Connect</button>
+          <button id="mock" class="secondary">Mock</button>
+        </div>
+        <p id="connection" class="small">Waiting to connect</p>
+      </div>
+    </aside>
+
+    <section class="panel companion-card">
+      <div class="glow"></div>
+      <div class="mascot-wrap" aria-hidden="true">
+        <div class="mascot">
+          <div class="ear left"><span></span><span></span><span></span></div>
+          <div class="ear right"><span></span><span></span><span></span></div>
+          <div class="body"></div>
+          <div class="dot"></div>
+          <div class="face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ground"></div>
+      <div class="message">
+        <strong id="message">All good!</strong>
+        <p id="detail" class="small">Levels sound great</p>
+      </div>
+      <div class="bars" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <section class="panel meter-card" style="grid-column: 1 / -1;">
+      <div class="hero">
+        <div class="dial" aria-hidden="true">
+          <div class="dial-inner">
+            <div>
+              <div id="dialCurrent" class="label">Current</div>
+              <strong id="dialValue" style="font-size: 40px; font-variant-numeric: tabular-nums;">--.-</strong>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div id="current" class="spl">--.-</div>
+          <div class="unit">dB SPL</div>
+          <p id="timestamp" class="small">No data yet</p>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="label">Average</div>
+          <strong id="average">--.-</strong>
+        </div>
+        <div class="metric">
+          <div class="label">Peak</div>
+          <strong id="peak">--.-</strong>
+        </div>
+        <div class="metric">
+          <div class="label">Leq 1m</div>
+          <strong id="leq1">--.-</strong>
+        </div>
+        <div class="metric">
+          <div class="label">Leq 10m</div>
+          <strong id="leq10">--.-</strong>
+        </div>
+        <div class="metric">
+          <div class="label">State</div>
+          <strong id="state">SAFE</strong>
+        </div>
+      </div>
+
+      <canvas id="chart" width="1100" height="260" aria-label="Live SPL history"></canvas>
+    </section>
+  </main>
+
+  <script>
+    const minSPL = 40;
+    const maxSPL = 130;
+    const history = [];
+    const ui = {
+      endpoint: document.querySelector("#endpoint"),
+      connect: document.querySelector("#connect"),
+      mock: document.querySelector("#mock"),
+      connection: document.querySelector("#connection"),
+      current: document.querySelector("#current"),
+      dialValue: document.querySelector("#dialValue"),
+      average: document.querySelector("#average"),
+      peak: document.querySelector("#peak"),
+      leq1: document.querySelector("#leq1"),
+      leq10: document.querySelector("#leq10"),
+      state: document.querySelector("#state"),
+      message: document.querySelector("#message"),
+      detail: document.querySelector("#detail"),
+      timestamp: document.querySelector("#timestamp"),
+      chart: document.querySelector("#chart")
+    };
+
+    let timer;
+    let mockPhase = 0;
+
+    const details = {
+      safe: "Levels sound great",
+      warning: "Watch the threshold",
+      critical: "Reduce level or distance",
+      peak: "High-energy burst"
+    };
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function format(value) {
+      return Number.isFinite(value) ? value.toFixed(1) : "--.-";
+    }
+
+    function drawChart() {
+      const canvas = ui.chart;
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+      ctx.clearRect(0, 0, width, height);
+
+      ctx.strokeStyle = "rgba(255,255,255,.08)";
+      ctx.lineWidth = 1;
+      for (const db of [70, 90, 100, 110]) {
+        const y = height - ((db - minSPL) / (maxSPL - minSPL)) * height;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      if (history.length < 2) return;
+
+      const gradient = ctx.createLinearGradient(0, 0, width, 0);
+      gradient.addColorStop(0, "#33d1fa");
+      gradient.addColorStop(.55, "#facc15");
+      gradient.addColorStop(.8, "#fb923c");
+      gradient.addColorStop(1, "#f87171");
+
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = 5;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      history.forEach((value, index) => {
+        const x = history.length === 1 ? 0 : (index / (history.length - 1)) * width;
+        const y = height - clamp((value - minSPL) / (maxSPL - minSPL), 0, 1) * height;
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+
+    function render(snapshot) {
+      const spl = Number(snapshot.spl_current);
+      const state = snapshot.threshold_state || "safe";
+      const progress = clamp((spl - minSPL) / (maxSPL - minSPL), 0, 1);
+      const barScale = state === "peak" ? 1.6 : state === "critical" ? 1.3 : state === "warning" ? 1.05 : .78;
+
+      document.body.className = state;
+      document.body.style.setProperty("--progress", progress.toFixed(3));
+      document.body.style.setProperty("--bar-scale", barScale);
+
+      ui.current.textContent = format(spl);
+      ui.dialValue.textContent = format(spl);
+      ui.average.textContent = format(Number(snapshot.spl_average));
+      ui.peak.textContent = format(Number(snapshot.spl_peak));
+      ui.leq1.textContent = format(Number(snapshot.leq_1_minute));
+      ui.leq10.textContent = format(Number(snapshot.leq_10_minutes));
+      ui.state.textContent = state.toUpperCase();
+      ui.message.textContent = snapshot.companion_state || "Live";
+      ui.detail.textContent = details[state] || "Receiving data";
+      ui.timestamp.textContent = `${snapshot.measurement_mode || "SPL"} · ${snapshot.timestamp || new Date().toISOString()}`;
+
+      if (Number.isFinite(spl)) {
+        history.push(spl);
+        while (history.length > 90) history.shift();
+      }
+      drawChart();
+    }
+
+    async function poll() {
+      try {
+        const response = await fetch(ui.endpoint.value, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        render(await response.json());
+        ui.connection.textContent = "Connected";
+      } catch (error) {
+        ui.connection.textContent = `Connection failed: ${error.message}`;
+      }
+    }
+
+    function mockSnapshot() {
+      mockPhase += .22;
+      const spl = 84 + Math.sin(mockPhase) * 14 + Math.sin(mockPhase * .39) * 8;
+      const state = spl > 108 ? "peak" : spl > 100 ? "critical" : spl > 90 ? "warning" : "safe";
+      const messages = { safe: "All good!", warning: "Getting loud...", critical: "Too loud!", peak: "PEAK! Oww!!" };
+      return {
+        app: "DeciMate SPL",
+        timestamp: new Date().toISOString(),
+        spl_current: spl,
+        spl_average: spl - 2.2,
+        spl_peak: Math.max(97, spl + 5),
+        spl_leq: spl - 1.2,
+        leq_1_minute: spl - 0.7,
+        leq_10_minutes: spl - 2.0,
+        measurement_mode: "SPL A Fast",
+        threshold_state: state,
+        companion_state: messages[state]
+      };
+    }
+
+    ui.connect.addEventListener("click", () => {
+      clearInterval(timer);
+      history.length = 0;
+      poll();
+      timer = setInterval(poll, 750);
+    });
+
+    ui.mock.addEventListener("click", () => {
+      clearInterval(timer);
+      history.length = 0;
+      ui.connection.textContent = "Using mock data";
+      render(mockSnapshot());
+      timer = setInterval(() => render(mockSnapshot()), 500);
+    });
+
+    drawChart();
+  </script>
+</body>
+</html>
