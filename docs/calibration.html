@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calibration Guide - DeciMate SPL</title>
+  <meta name="description" content="Step-by-step guide for using DeciMate SPL calibration offset and Match Current Reading to Reference.">
+  <meta property="og:title" content="DeciMate SPL Calibration Guide">
+  <meta property="og:description" content="Learn how to calibrate DeciMate SPL with a reference meter, acoustic calibrator, or trusted SPL app.">
+  <meta property="og:image" content="logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07090f;
+      --bg2:       #0c1018;
+      --card:      #10151f;
+      --card2:     #141920;
+      --border:    rgba(255,255,255,0.07);
+      --border2:   rgba(255,255,255,0.04);
+      --cyan:      #34d2f8;
+      --blue:      #2472e8;
+      --text:      #e8eeff;
+      --muted:     #6b7a96;
+      --muted2:    #4a5568;
+      --green:     #34d999;
+      --yellow:    #f5c842;
+      --orange:    #f59332;
+      --red:       #f04040;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    code { font-family: "SF Mono", Menlo, Consolas, monospace; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .wrap-sm { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(7,9,15,0.88);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; height: 60px; gap: 32px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 17px; letter-spacing: -.3px;
+      flex-shrink: 0;
+    }
+    .nav-brand img { width: 30px; height: 30px; border-radius: 8px; }
+    .nav-links { display: flex; gap: 24px; list-style: none; margin-left: auto; }
+    .nav-links a { font-size: 14px; color: var(--muted); transition: color .18s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      margin-left: 8px;
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--cyan); color: #060b14;
+      font-weight: 700; font-size: 13px;
+      padding: 8px 16px; border-radius: 99px;
+      transition: opacity .18s, transform .18s;
+      flex-shrink: 0;
+    }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); }
+
+    .hero {
+      position: relative;
+      padding: 96px 0 76px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: -220px -20% auto;
+      height: 640px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(52,210,248,.11), transparent 68%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 54px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(52,210,248,.08);
+      border: 1px solid rgba(52,210,248,.2);
+      color: var(--cyan);
+      font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 99px; margin-bottom: 24px;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px rgba(52,210,248,.9); }
+    h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      font-weight: 850;
+      letter-spacing: -2.5px;
+      line-height: .98;
+      margin-bottom: 22px;
+    }
+    .grad {
+      background: linear-gradient(135deg, var(--cyan) 16%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 34px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn-primary,
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 46px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
+      transition: transform .18s, border-color .18s, background .18s;
+    }
+    .btn-primary {
+      padding: 12px 20px;
+      background: var(--cyan);
+      color: #06101a;
+    }
+    .btn-ghost {
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-primary:hover,
+    .btn-ghost:hover { transform: translateY(-2px); }
+    .btn-ghost:hover { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.15); }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(20,25,32,.88), rgba(10,14,22,.92));
+      border: 1px solid rgba(52,210,248,.16);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 38px 110px rgba(0,0,0,.55);
+    }
+    .calibration-preview {
+      background:
+        radial-gradient(circle at 22% 10%, rgba(52,210,248,.18), transparent 34%),
+        #0d111b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 22px;
+      padding: 20px;
+    }
+    .preview-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .preview-head strong { display: block; font-size: 18px; letter-spacing: -.3px; }
+    .preview-head span { color: var(--muted); font-size: 12px; }
+    .pill {
+      flex: 0 0 auto;
+      border-radius: 99px;
+      padding: 7px 10px;
+      background: rgba(52,217,153,.14);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .readout {
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .readout span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .readout strong {
+      display: block;
+      font-size: clamp(30px, 6vw, 48px);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -1.2px;
+    }
+    .offset-box {
+      background: rgba(52,210,248,.07);
+      border: 1px solid rgba(52,210,248,.18);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+    .offset-box span { color: #b9eefe; font-size: 13px; }
+    .offset-box strong { color: var(--cyan); font-size: 26px; font-variant-numeric: tabular-nums; }
+
+    .section { padding: 92px 0; }
+    .section-sm { padding: 64px 0; }
+    .divider-line { border: 0; border-top: 1px solid var(--border2); }
+    .section-label {
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 850;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+    .section-body {
+      max-width: 590px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 46px;
+    }
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+    .step-number {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(52,210,248,.1);
+      color: var(--cyan);
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .step-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .step-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 42px;
+      align-items: center;
+    }
+    .screenshot-frame {
+      background: linear-gradient(180deg, rgba(20,25,32,.88), rgba(11,15,23,.92));
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 26px 80px rgba(0,0,0,.45);
+    }
+    .screenshot-frame img {
+      width: 100%;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hint-list { display: grid; gap: 12px; margin-top: 24px; }
+    .hint {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .hint-mark {
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(52,210,248,.12);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .hint strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .hint span { display: block; font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 46px;
+    }
+    .workflow-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .workflow-card-header { padding: 24px 24px 0; }
+    .workflow-card h3 { font-size: 20px; letter-spacing: -.4px; margin-bottom: 8px; }
+    .workflow-card p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .meter-card {
+      margin: 22px 16px 16px;
+      background: #090d14;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 18px;
+      min-height: 292px;
+    }
+    .mini-phone {
+      max-width: 250px;
+      margin: 0 auto;
+      background: #141922;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+    .cal-table {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 18px;
+    }
+    .cal-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+    }
+    .cal-row strong { color: var(--text); font-variant-numeric: tabular-nums; }
+    .cal-row .good { color: var(--green); }
+    .cal-row .warn { color: var(--yellow); }
+    .cal-row .hot { color: var(--red); }
+
+    .formula {
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 22px 24px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-x: auto;
+      color: #b8c7df;
+      margin-top: 28px;
+    }
+    .formula strong { color: var(--cyan); }
+
+    .callout {
+      margin-top: 42px;
+      background: linear-gradient(135deg, rgba(52,210,248,.08), rgba(36,114,232,.06));
+      border: 1px solid rgba(52,210,248,.18);
+      border-radius: 24px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+    .callout h3 { font-size: 21px; margin-bottom: 6px; }
+    .callout p { color: var(--muted); font-size: 14px; }
+
+    .footer {
+      border-top: 1px solid var(--border2);
+      padding: 36px 0;
+    }
+    .footer-inner {
+      max-width: 1080px; margin: 0 auto; padding: 0 24px;
+      display: flex; flex-wrap: wrap; gap: 20px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-brand img { width: 26px; border-radius: 7px; }
+    .footer-brand span { font-size: 14px; font-weight: 700; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color .15s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 12px; color: var(--muted2); }
+
+    @media (max-width: 880px) {
+      .hero-grid,
+      .split,
+      .callout { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .cards-grid { grid-template-columns: 1fr; }
+      .nav-inner { height: auto; min-height: 60px; flex-wrap: wrap; gap: 10px 14px; padding: 10px 18px 12px; }
+      .nav-brand { flex: 1 1 auto; }
+      .nav-cta { margin-left: 0; padding: 8px 12px; }
+      .nav-links {
+        order: 3;
+        flex: 0 0 100%;
+        display: flex;
+        gap: 10px;
+        margin-left: 0;
+        padding: 2px 0 0;
+        flex-wrap: wrap;
+        overflow: visible;
+      }
+      .nav-links a {
+        display: block;
+        white-space: nowrap;
+        padding: 8px 11px;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 999px;
+        background: rgba(255,255,255,.035);
+        color: var(--text);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero { padding-top: 70px; }
+      .steps-grid,
+      .compare-grid { grid-template-columns: 1fr; }
+      .hero-card,
+      .callout { padding: 18px; }
+      .offset-box { align-items: flex-start; flex-direction: column; }
+      h1 { letter-spacing: -1.5px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="calibration.html">Calibration</a></li>
+      <li><a href="index.html#exposure">Reports</a></li>
+      <li><a href="live-link.html">Live Link</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+    <a class="nav-cta" href="index.html#download">App Store</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Calibration Guide</div>
+          <h1>Make DeciMate SPL match your <span class="grad">reference reading.</span></h1>
+          <p class="hero-sub">
+            Calibration is the simple step that tells DeciMate SPL how much to adjust its reading on your iPhone, case, microphone, and setup. Use a trusted meter, acoustic calibrator, or a carefully chosen reference app.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#quick-start">Start step by step</a>
+            <a class="btn-ghost" href="#offset">Understand the offset</a>
+          </div>
+        </div>
+
+        <div class="hero-card" aria-label="Calibration offset preview">
+          <div class="calibration-preview">
+            <div class="preview-head">
+              <div>
+                <strong>Match Current Reading</strong>
+                <span>Example with a steady reference sound</span>
+              </div>
+              <div class="pill">CALIBRATED</div>
+            </div>
+            <div class="compare-grid">
+              <div class="readout">
+                <span>Reference meter</span>
+                <strong>82.0</strong>
+              </div>
+              <div class="readout">
+                <span>Before match</span>
+                <strong>100.0</strong>
+              </div>
+            </div>
+            <div class="offset-box">
+              <span>DeciMate SPL applies this correction</span>
+              <strong>-18.0 dB</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section" id="quick-start">
+    <div class="wrap">
+      <p class="section-label">Quick Start</p>
+      <h2 class="section-title">The easiest way<br>to calibrate.</h2>
+      <p class="section-body">
+        You need one stable sound and one reference number. DeciMate SPL compares its current reading to that reference number, then saves the offset for future measurements and exports.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Pick a reference</h3>
+          <p>Use a real SPL meter, acoustic calibrator, or trusted SPL app. Match the same weighting and response when possible.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Play steady sound</h3>
+          <p>Use pink noise, a steady speaker tone, HVAC noise, or another stable source. Avoid speech and music peaks.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Enter reference dB</h3>
+          <p>Open Settings, go to Calibration, and enter the dB value shown by the reference meter.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Tap match</h3>
+          <p>Tap Match Current Reading to Reference. DeciMate SPL calculates and saves the correction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="section-label">In The App</p>
+          <h2 class="section-title">Where to tap<br>inside DeciMate SPL.</h2>
+          <p class="section-body">
+            Start monitoring first so the app has a live value. Then open Settings and use the Calibration controls. The match button is best when the sound is steady for a few seconds.
+          </p>
+          <div class="hint-list">
+            <div class="hint">
+              <div class="hint-mark">1</div>
+              <div>
+                <strong>Start DeciMate SPL monitoring</strong>
+                <span>Let the reading settle for a moment. If the number is jumping a lot, choose a steadier sound source.</span>
+              </div>
+            </div>
+            <div class="hint">
+              <div class="hint-mark">2</div>
+              <div>
+                <strong>Open Settings</strong>
+                <span>Find Calibration. Enter the reference value you want DeciMate SPL to match, for example <code>82.0 dB</code>.</span>
+              </div>
+            </div>
+            <div class="hint">
+              <div class="hint-mark">3</div>
+              <div>
+                <strong>Tap Match Current Reading to Reference</strong>
+                <span>The app adjusts the calibration offset automatically. You do not need to do the math yourself.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screenshot-frame">
+          <img src="screenshots/pro_05_settings.png" alt="DeciMate SPL settings screen with calibration controls">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section" id="offset">
+    <div class="wrap">
+      <p class="section-label">Offset Meaning</p>
+      <h2 class="section-title">What does<br>-18 dB mean?</h2>
+      <p class="section-body">
+        A negative offset means DeciMate SPL was reading higher than your reference. A positive offset means it was reading lower. The app adds that offset to future readings so the displayed value lines up with your reference setup.
+      </p>
+
+      <div class="cards-grid">
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Example: DeciMate SPL reads high</h3>
+            <p>Your reference meter says the room is 82.0 dB. DeciMate SPL currently says 100.0 dB. The correction needs to pull DeciMate SPL down by 18 dB.</p>
+          </div>
+          <div class="meter-card">
+            <div class="cal-table">
+              <div class="cal-row"><span>Reference</span><strong class="good">82.0 dB</strong></div>
+              <div class="cal-row"><span>DeciMate before match</span><strong class="warn">100.0 dB</strong></div>
+              <div class="cal-row"><span>New offset</span><strong class="hot">-18.0 dB</strong></div>
+              <div class="cal-row"><span>DeciMate after match</span><strong class="good">82.0 dB</strong></div>
+            </div>
+            <div class="formula"><strong>Formula</strong><br>new offset = old offset + reference dB - current dB</div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Example: DeciMate SPL reads low</h3>
+            <p>Your reference meter says 82.0 dB. DeciMate SPL currently says 78.0 dB. The correction needs to push DeciMate SPL up by 4 dB.</p>
+          </div>
+          <div class="meter-card">
+            <div class="cal-table">
+              <div class="cal-row"><span>Reference</span><strong class="good">82.0 dB</strong></div>
+              <div class="cal-row"><span>DeciMate before match</span><strong class="warn">78.0 dB</strong></div>
+              <div class="cal-row"><span>New offset</span><strong class="good">+4.0 dB</strong></div>
+              <div class="cal-row"><span>DeciMate after match</span><strong class="good">82.0 dB</strong></div>
+            </div>
+            <div class="formula"><strong>Plain English</strong><br>The offset is just the correction needed to make both numbers agree.</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section">
+    <div class="wrap">
+      <p class="section-label">Best Setup</p>
+      <h2 class="section-title">How to get a cleaner<br>calibration.</h2>
+      <p class="section-body">
+        Small placement changes can change SPL readings. Treat calibration like matching two cameras: they need to look at the same thing from the same spot.
+      </p>
+
+      <div class="cards-grid">
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Best: hardware reference</h3>
+            <p>Use a calibrated SPL meter or an acoustic calibrator if you have one. For external microphones, a 94 dB at 1 kHz acoustic calibrator is the usual professional check.</p>
+          </div>
+          <div class="meter-card">
+            <div class="cal-table">
+              <div class="cal-row"><span>Reference source</span><strong>Meter or calibrator</strong></div>
+              <div class="cal-row"><span>Suggested sound</span><strong>Steady pink noise</strong></div>
+              <div class="cal-row"><span>Match mode</span><strong>A Fast or A Slow</strong></div>
+              <div class="cal-row"><span>Repeat check</span><strong>2 or 3 times</strong></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="workflow-card">
+          <div class="workflow-card-header">
+            <h3>Practical: another SPL app</h3>
+            <p>If you do not own a meter, compare against a trusted app. The NIOSH Sound Level Meter app is a useful reference because it is documented by CDC/NIOSH.</p>
+          </div>
+          <div class="meter-card">
+            <div class="mini-phone">
+              <img src="screenshots/pro_02_focused.png" alt="DeciMate SPL focused monitoring state">
+            </div>
+            <div class="cal-table">
+              <div class="cal-row"><span>Good reference</span><strong>NIOSH SLM app</strong></div>
+              <div class="cal-row"><span>Compare with</span><strong>Stable sound</strong></div>
+              <div class="cal-row"><span>Avoid</span><strong>Music peaks</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="callout">
+        <div>
+          <h3>Using another app on the same iPhone?</h3>
+          <p>Use a steady sound, read the reference app first, then switch back to DeciMate SPL quickly and match that value. Repeat a few times and use the value that is most consistent.</p>
+        </div>
+        <a class="btn-ghost" href="https://www.cdc.gov/niosh/noise/about/app.html" target="_blank" rel="noopener">NIOSH SLM info</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-line">
+
+  <section class="section-sm">
+    <div class="wrap">
+      <p class="section-label">Simple Rules</p>
+      <h2 class="section-title">Before you trust<br>the number.</h2>
+      <div class="hint-list">
+        <div class="hint">
+          <div class="hint-mark">i</div>
+          <div>
+            <strong>Keep both microphones in the same place</strong>
+            <span>Same height, same distance from the speaker, and same direction. A few centimeters can matter near loudspeakers.</span>
+          </div>
+        </div>
+        <div class="hint">
+          <div class="hint-mark">i</div>
+          <div>
+            <strong>Use the same measurement style</strong>
+            <span>Compare A-weighted to A-weighted, and Fast to Fast or Slow to Slow. Do not compare different modes and expect the same number.</span>
+          </div>
+        </div>
+        <div class="hint">
+          <div class="hint-mark">i</div>
+          <div>
+            <strong>Remove cases or obstructions</strong>
+            <span>Phone cases, fingers, dust, wind, and tables can block or reflect sound around the iPhone microphones.</span>
+          </div>
+        </div>
+        <div class="hint">
+          <div class="hint-mark">i</div>
+          <div>
+            <strong>Re-check when the setup changes</strong>
+            <span>Repeat calibration after changing phone model, case, external microphone, measurement position, or major iOS audio settings.</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <div>
+          <h3>Important limit</h3>
+          <p>Calibration improves practical agreement with your reference, but DeciMate SPL is not a certified Class 1 or Class 2 sound level meter. For legal, workplace, or compliance-critical measurements, use certified equipment.</p>
+        </div>
+        <a class="btn-primary" href="index.html">Back to home</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.png" alt="DeciMate SPL">
+      <span>DeciMate SPL</span>
+    </div>
+    <nav class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="live-link.html">Live Link Guide</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="mailto:info@loudandbeyond.com">Support</a>
+      <a href="https://github.com/MaxdaveMsp/deciMate" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <p class="footer-copy">© 2026 Loud and Beyond · David Torres · Not a certified SPL meter.</p>
+  </div>
+</footer>
+
+</body>
+</html>
